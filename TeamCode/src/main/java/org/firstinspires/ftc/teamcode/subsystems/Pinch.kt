@@ -10,7 +10,8 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
         const val THRESHOLD = 2.0
         const val DROP_TIME_TOP = 1000
         const val DROP_TIME = 1500
-        const val RESET_POS = 0.5
+        const val RESET_POS_1 = 0.5
+        const val RESET_POS_2 = 0.5
     }
 
     //Creates 2 box servos
@@ -24,19 +25,19 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
     var state = PinchState.CLOSED
 
     init {
-        this.pinch1 = hardwareMap.get(Servo::class.java, "pinch1")
-        this.pinch2 = hardwareMap.get(Servo::class.java, "pinch2")
+        this.pinch1 = hardwareMap.get(Servo::class.java, "leftPinch")
+        this.pinch2 = hardwareMap.get(Servo::class.java, "rightPinch")
     }
 
     fun open(){
-        pinch1.position = RESET_POS
-        pinch2.position = RESET_POS
+        pinch1.position = 0.12
+        pinch2.position = 0.20
         state = PinchState.OPEN
     }
 
     fun close(){
-        pinch1.position = RESET_POS + 0.5
-        pinch2.position = RESET_POS + 0.5
+        pinch1.position = 0.15
+        pinch2.position = 0.17
         state = PinchState.CLOSED
     }
 }
