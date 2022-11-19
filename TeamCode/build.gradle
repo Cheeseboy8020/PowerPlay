@@ -20,13 +20,14 @@ android {
     namespace = 'org.firstinspires.ftc.teamcode'
 }
 
-repositories {
+repositories{
     maven { url 'https://jitpack.io' }
 }
 
 
 dependencies {
     implementation project(':FtcRobotController')
+    implementation project(path: ':AutoPIDTuner')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
     implementation 'org.apache.commons:commons-math3:3.6.1'
