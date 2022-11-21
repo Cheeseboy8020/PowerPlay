@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 
-class GoToPos(private val lift: Lift, private val pos: Lift.Positions) : CommandBase() {
+class LiftGoToPos(private val lift: Lift, private val pos: Lift.Positions) : CommandBase() {
     init {
         addRequirements(lift)
     }

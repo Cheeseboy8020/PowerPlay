@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.autonomous.Positions.A2
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P1
 import org.firstinspires.ftc.teamcode.commands.DropCone
 import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
-import org.firstinspires.ftc.teamcode.commands.GoToPos
+import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
@@ -59,15 +59,15 @@ class A2: AutoBase() {
         telemetry.sendLine("Scheduling Commands...")
 
         schedule(SequentialCommandGroup(
-            GoToPos(lift, Lift.Positions.GROUND), // Lifts the lift so the cone doesn't scrape on the ground
+            LiftGoToPos(lift, Lift.Positions.GROUND), // Lifts the lift so the cone doesn't scrape on the ground
             FollowTrajectorySequence(drive, goToJunction1), // Goes to first position (Corner of tile C1)
             ParallelCommandGroup( // Makes everything in parenthesis run parallel (Goes to high junction and lifts the lift at the same time)
                 FollowTrajectorySequence(drive, goToJunction2), // Goes to High Junction
-                GoToPos(lift, Lift.Positions.HIGH) // Lifts the lift
+                LiftGoToPos(lift, Lift.Positions.HIGH) // Lifts the lift
             ),
             DropCone(pinch), // Drops cone
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                GoToPos(lift, Lift.Positions.IN_ROBOT),
+                LiftGoToPos(lift, Lift.Positions.IN_ROBOT),
                 FollowTrajectorySequence(drive, goToPark)
             )
         ))
