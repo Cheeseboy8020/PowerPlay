@@ -73,15 +73,19 @@ public class MotorDirectionDebugger extends LinearOpMode {
             if(gamepad1.x) {
                 drive.setMotorPowers(MOTOR_POWER, 0, 0, 0);
                 telemetry.addLine("Running Motor: Front Left");
+                telemetry.addData("Encoder Pos: ", drive.leftFront.getCurrentPosition());
             } else if(gamepad1.y) {
                 drive.setMotorPowers(0, 0, 0, MOTOR_POWER);
                 telemetry.addLine("Running Motor: Front Right");
+                telemetry.addData("Encoder Pos: ", drive.rightFront.getCurrentPosition());
             } else if(gamepad1.b) {
                 drive.setMotorPowers(0, 0, MOTOR_POWER, 0);
                 telemetry.addLine("Running Motor: Rear Right");
+                telemetry.addData("Encoder Pos: ", drive.rightRear.getCurrentPosition());
             } else if(gamepad1.a) {
                 drive.setMotorPowers(0, MOTOR_POWER, 0, 0);
                 telemetry.addLine("Running Motor: Rear Left");
+                telemetry.addData("Encoder Pos: ", drive.leftRear.getCurrentPosition());
             } else {
                 drive.setMotorPowers(0, 0, 0, 0);
                 telemetry.addLine("Running Motor: None");

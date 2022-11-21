@@ -15,8 +15,8 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
     }
 
     //Creates 2 box servos
-    var pinch1: Servo
-    var pinch2: Servo
+    var leftPinch: Servo
+    var rightPinch: Servo
 
     enum class PinchState{
         OPEN, CLOSED
@@ -25,19 +25,23 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
     var state = PinchState.CLOSED
 
     init {
-        this.pinch1 = hardwareMap.get(Servo::class.java, "leftPinch")
-        this.pinch2 = hardwareMap.get(Servo::class.java, "rightPinch")
+        this.leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
+        this.rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
     }
 
     fun open(){
-        pinch1.position = 0.12
-        pinch2.position = 0.20
+        //right
+        leftPinch.position = 0.48
+        //left
+        rightPinch.position = 0.72
         state = PinchState.OPEN
     }
 
     fun close(){
-        pinch1.position = 0.15
-        pinch2.position = 0.17
+        //right
+        leftPinch.position = 0.43
+        //left
+        rightPinch.position = 0.78
         state = PinchState.CLOSED
     }
 }

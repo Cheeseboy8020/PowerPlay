@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.*
 import org.firstinspires.ftc.teamcode.subsystems.*
 
 
-@TeleOp(name = "Lift Positions Test")
+@TeleOp
 class TeleOp: CommandOpMode() {
     override fun initialize() {
 
