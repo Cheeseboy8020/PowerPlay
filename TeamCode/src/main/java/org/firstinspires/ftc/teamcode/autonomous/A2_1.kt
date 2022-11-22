@@ -47,7 +47,7 @@ class A2_1: AutoBase() {
 
         val goToJunction1 = drive.trajectorySequenceBuilder(A2) // Goes to position before raising lift
             .strafeRight(20.0)
-            .lineTo(Vector2d(-57.0, 17.0))
+            .lineTo(Vector2d(-48.0, 17.0))
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToJunction1.end()) // Goes to high junction

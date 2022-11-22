@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.autonomous
 
+import android.util.Log
 import com.acmerobotics.roadrunner.geometry.Vector2d
+import com.acmerobotics.roadrunner.path.EmptyPathSegmentException
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -39,22 +41,24 @@ class A2: AutoBase() {
         while(!isStarted){ // Scans CV during the rest of Init
             signalPos = scanner.scanBarcode().first // Scans QR Code and Assigns it to signalPos Variable
             telemetry.sendLine(scanner.scanBarcode().second.toString()) // Sends Telemetry of Parking Pos
+            Log.d("Pos", signalPos.toString())
         }
 
         telemetry.sendLine("Generating Trajectories...")
 
         val goToJunction1 = drive.trajectorySequenceBuilder(A2) // Goes to position before raising lift
             .strafeRight(20.0)
-            .lineTo(Vector2d(-57.0, 17.0))
+            .lineTo(Vector2d(-48.0, 17.0))
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToJunction1.end()) // Goes to high junction
             .splineTo(Positions.X2.vec(), Positions.X2.heading)
             .build()
 
-        val goToPark = drive.trajectorySequenceBuilder(goToJunction2.end()) // Goes to parking positions based CV
-            .lineTo(signalPos)
-            .build()
+        val goToPark =
+                drive.trajectorySequenceBuilder(goToJunction2.end()) // Goes to parking positions based CV
+                    .lineTo(signalPos)
+                    .build()
 
         telemetry.sendLine("Scheduling Commands...")
 
