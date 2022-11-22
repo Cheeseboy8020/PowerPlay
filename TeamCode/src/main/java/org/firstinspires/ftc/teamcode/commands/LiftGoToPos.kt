@@ -20,7 +20,7 @@ class LiftGoToPos(private val lift: Lift, private val pos: Lift.Positions) : Com
     }
 
     override fun isFinished(): Boolean {
-        return approximatelyEqual(lift.lift.currentPosition, lift.currentPosition.targetPosition, 5.0)
+        return approximatelyEqual(lift.lift.currentPosition, lift.currentPosition.targetPosition, 10.0)
     }
 
     override fun end(interrupted: Boolean) {

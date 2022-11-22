@@ -9,4 +9,5 @@ object Positions {
     val P1 = Vector2d(-58.0, 12.0)
     val P2 = X2.vec()
     val P3 = Vector2d(-13.0, 12.0)
+    val C1 = Vector2d(-34.0, 14.0)
 }
