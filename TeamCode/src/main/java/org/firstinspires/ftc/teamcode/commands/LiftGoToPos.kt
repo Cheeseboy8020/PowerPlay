@@ -1,39 +1,38 @@
 package org.firstinspires.ftc.teamcode.commands
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.acmerobotics.roadrunner.control.PIDFController
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.Lift
+import kotlin.math.abs
 
 class LiftGoToPos(private val lift: Lift, private val pos: Lift.Positions) : CommandBase() {
+    val coeffs = PIDCoefficients(0.0, 0.0, 0.0)
+    val tolerance = 10.0
+    val liftController = PIDFController(coeffs, 0.0, 0.0, 0.1)
+
     init {
+        liftController.setOutputBounds(-0.8, 1.0)
         addRequirements(lift)
     }
 
     override fun initialize() {
-        lift.currentPosition = pos
+        lift.lift.power = 0.0
+        liftController.reset()
+        liftController.targetPosition = pos.targetPosition.toDouble()
     }
 
     override fun execute() {
-        if (lift.lift.currentPosition < lift.currentPosition.targetPosition)
-            lift.lift.power = 1.0
-        else
-            lift.lift.power = -1.0
+        val liftPosition = lift.lift.currentPosition;
+        //Update the lift power with the controller
+        lift.lift.power = liftController.update(liftPosition.toDouble())
     }
 
     override fun isFinished(): Boolean {
-        return approximatelyEqual(lift.lift.currentPosition, lift.currentPosition.targetPosition, 10.0)
+        return abs(lift.lift.currentPosition - pos.targetPosition) < tolerance
     }
 
     override fun end(interrupted: Boolean) {
         lift.lift.power = 0.0
-    }
-
-    fun approximatelyEqual(
-        desiredValue: Int,
-        actualValue: Int,
-        tolerancePercentage: Double
-    ): Boolean {
-        val diff = Math.abs(desiredValue - actualValue) //  1000 - 950  = 50
-        val tolerance = tolerancePercentage / 100 * desiredValue //  20/100*1000 = 200
-        return diff < tolerance //  50<200      = true
     }
 }
