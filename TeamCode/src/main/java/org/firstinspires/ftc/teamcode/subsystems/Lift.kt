@@ -23,6 +23,7 @@ class Lift(hardwareMap: HardwareMap, private val telemetry: Telemetry? = null, s
     }
 
     var currentPosition = Positions.IN_ROBOT
+    var targetVelo = 0.0
 
 
     init {

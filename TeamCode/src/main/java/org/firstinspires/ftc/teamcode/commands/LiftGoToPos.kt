@@ -26,6 +26,7 @@ class LiftGoToPos(private val lift: Lift, private val pos: Lift.Positions) : Com
         val liftPosition = lift.lift.currentPosition;
         //Update the lift power with the controller
         lift.lift.power = liftController.update(liftPosition.toDouble())
+        lift.targetVelo = liftController.targetVelocity
     }
 
     override fun isFinished(): Boolean {

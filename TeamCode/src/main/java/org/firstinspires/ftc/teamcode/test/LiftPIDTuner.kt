@@ -36,10 +36,10 @@ class LiftPIDTuner : CommandOpMode() {
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
             .whenPressed(
                 SequentialCommandGroup(
-                    InstantCommand({target = 3000.0}),
+                    InstantCommand({target = Lift.Positions.HIGH.targetPosition.toDouble() }),
                     LiftGoToPos(lift, Lift.Positions.HIGH),
                     WaitCommand(1000),
-                    InstantCommand({target = 0.0}),
+                    InstantCommand({target = Lift.Positions.IN_ROBOT.targetPosition.toDouble()}),
                     LiftGoToPos(lift, Lift.Positions.IN_ROBOT)
                 )
             )
@@ -48,8 +48,11 @@ class LiftPIDTuner : CommandOpMode() {
     override fun run() {
         super.run()
 
-        telemetry.addData("Target", target)
-        telemetry.addData("Actual", lift.lift.currentPosition)
+        telemetry.addData("Target Velo", lift.targetVelo)
+        telemetry.addData("Actual Velo", lift.lift.velocity)
+
+        telemetry.addData("Target Pos", target)
+        telemetry.addData("Actual Pos", lift.lift.currentPosition)
 
         telemetry.update()
     }
