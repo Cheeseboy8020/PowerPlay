@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.autonomous.Positions.C1
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P1
 import org.firstinspires.ftc.teamcode.commands.DropCone
 import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
-import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
 import org.firstinspires.ftc.teamcode.commands.PickCone
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.subsystems.Lift

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.autonomous
 
 import android.util.Log
 import com.acmerobotics.roadrunner.geometry.Vector2d
-import com.acmerobotics.roadrunner.path.EmptyPathSegmentException
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.teamcode.autonomous.Positions.A2
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P1
 import org.firstinspires.ftc.teamcode.commands.DropCone
 import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
-import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
