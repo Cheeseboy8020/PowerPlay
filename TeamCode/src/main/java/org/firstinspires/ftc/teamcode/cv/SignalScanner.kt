@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.cv
 
 import android.util.Log
 import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.teamcode.autonomous.Positions
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P1
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P2
 import org.firstinspires.ftc.teamcode.autonomous.Positions.P3
@@ -62,7 +64,7 @@ class SignalScanner(hardwareMap: HardwareMap, telemetry: Telemetry){
         FtcDashboard.getInstance().startCameraStream(webcam, 60.0)
     }
 
-    fun scanBarcode(): Pair<Vector2d, Int> {
+    fun scanBarcode(): Pair<Pose2d, Int> {
         var detections = pipeline.latestDetections
         for(detection in detections){
             if (detection.id == 1){
@@ -75,7 +77,7 @@ class SignalScanner(hardwareMap: HardwareMap, telemetry: Telemetry){
                 return Pair(P3, 3)
             }
         }
-        return Pair(P1, 0)
+        return Pair(Positions.X2, 0)
     }
     fun stop() {
         FtcDashboard.getInstance().stopCameraStream()

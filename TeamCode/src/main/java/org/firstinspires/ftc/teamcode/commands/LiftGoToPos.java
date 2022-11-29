@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.commands.Coefficients.kD;
+import static org.firstinspires.ftc.teamcode.commands.Coefficients.kI;
+import static org.firstinspires.ftc.teamcode.commands.Coefficients.kP;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
@@ -9,9 +13,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 
 @Config
 public class LiftGoToPos extends CommandBase {
-
     private PIDFController liftController;
-    public static PIDCoefficients coefficients = new PIDCoefficients(0.0335, 0, 0.00025);
+    public static PIDCoefficients coefficients = new PIDCoefficients(kP, kI, kD);
     private double kStatic = 0.1; //gravity
     private double tolerance;
     private final Lift lift;
@@ -21,8 +24,12 @@ public class LiftGoToPos extends CommandBase {
 
     public LiftGoToPos(Lift lift, Lift.Positions pos){
         this.lift = lift;
-        this.tolerance = tolerance;
-        this.targetPosition = 10;
+        this.tolerance = 10;
+        if(pos.getTargetPosition() == 50 || pos.getTargetPosition() == -50) {
+            this.targetPosition = lift.getLift().getCurrentPosition() + pos.getTargetPosition();
+        } else {
+            this.targetPosition = pos.getTargetPosition();
+        }
 
         liftController = new PIDFController(coefficients, 0, 0, kStatic);
         liftController.setOutputBounds(-0.8, 1);

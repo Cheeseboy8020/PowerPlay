@@ -13,9 +13,11 @@ import org.firstinspires.ftc.teamcode.subsystems.*
 
 @TeleOp
 class TeleOp: CommandOpMode() {
+
     override fun initialize() {
 
         val gamepad1 = GamepadEx(gamepad1)
+        val gamepad2 = GamepadEx(gamepad2)
 
 
         val lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT)
@@ -24,27 +26,29 @@ class TeleOp: CommandOpMode() {
         Log.w("TeleOp", "Initialized Lift")
 
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.X)
+        gamepad2.getGamepadButton(GamepadKeys.Button.A)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.LOW))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.A)
+        gamepad2.getGamepadButton(GamepadKeys.Button.X)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.IN_ROBOT))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.Y)
+        gamepad2.getGamepadButton(GamepadKeys.Button.Y)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.HIGH))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.B)
+        gamepad2.getGamepadButton(GamepadKeys.Button.B)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.MEDIUM))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(InstantCommand(pinch::open, pinch))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+        gamepad2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
             .whenPressed(InstantCommand(pinch::close, pinch))
 
-        Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
-            .whileActiveContinuous(InstantCommand({lift.lift.power = gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)}, lift))
-            .whenInactive(InstantCommand({lift.lift.power = 0.0}, lift))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+            .whenPressed(LiftGoToPos(lift, Lift.Positions.STACK))
+
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(LiftGoToPos(lift, Lift.Positions.STACK_DOWN))
 
         schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
 

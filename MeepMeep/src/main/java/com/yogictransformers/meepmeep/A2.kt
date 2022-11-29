@@ -9,6 +9,7 @@ import com.noahbres.meepmeep.roadrunner.DriveShim
 import com.yogictransformers.meepmeep.DriveConstants.*
 import com.yogictransformers.meepmeep.Positions.A2
 import com.yogictransformers.meepmeep.Positions.X2
+import com.yogictransformers.meepmeep.Positions.P1
 
 fun main() {
     System.setProperty("sun.java2d.opengl", "true")
@@ -23,6 +24,8 @@ fun main() {
                 .strafeRight(20.0)
                 .lineTo(Vector2d(-57.0, 17.0))
                 .splineTo(X2.vec(), X2.heading)
+                .splineTo(Vector2d(-38.0, 10.0), Math.toRadians(180.0))
+                .lineTo(Positions.P1.vec())
                 .build()
         }
 

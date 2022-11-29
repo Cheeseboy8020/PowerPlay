@@ -11,15 +11,17 @@ class Lift(hardwareMap: HardwareMap, private val telemetry: Telemetry? = null, s
 
 
     enum class Positions(val targetPosition: Int) {
-        HIGH(3600),
-        MEDIUM(2700),
+        HIGH(3500),
+        MEDIUM(2600),
         LOW(1700),
         GROUND(100),
         IN_ROBOT(10),
-        FIVE_STACK(500),
-        FOUR_STACK(450),
-        THREE_STACK(400),
-        TWO_STACK(350)
+        STACK(50),
+        STACK_DOWN(-50),
+        FIVE_STACK(830),
+        FOUR_STACK(700),
+        THREE_STACK(300),
+        TWO_STACK(200)
     }
 
     var currentPosition = Positions.IN_ROBOT
