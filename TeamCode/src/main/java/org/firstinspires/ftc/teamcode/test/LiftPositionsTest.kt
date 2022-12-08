@@ -5,19 +5,22 @@ import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.commands.*
 import org.firstinspires.ftc.teamcode.subsystems.*
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 
 @TeleOp(name = "Lift Positions Test")
+@Disabled
 class LiftPositionsTest: CommandOpMode() {
     override fun initialize() {
 
         val gamepad1 = GamepadEx(gamepad1)
 
 
-        val lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT)
+        val lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
         val pinch = Pinch(hardwareMap, telemetry)
         Log.w("TeleOp", "Initialized Lift")
 

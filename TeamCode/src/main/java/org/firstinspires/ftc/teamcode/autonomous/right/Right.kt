@@ -1,40 +1,42 @@
-package org.firstinspires.ftc.teamcode.autonomous
+package org.firstinspires.ftc.teamcode.autonomous.right
 
-import android.util.Log
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.WaitCommand
-import com.arcrobotics.ftclib.command.WaitUntilCommand
-import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.autonomous.Positions.A2
-import org.firstinspires.ftc.teamcode.autonomous.Positions.P1
+import org.firstinspires.ftc.teamcode.autonomous.right.Positions.START
+import org.firstinspires.ftc.teamcode.autonomous.right.Positions.P1
+import org.firstinspires.ftc.teamcode.autonomous.right.Positions.P2
+import org.firstinspires.ftc.teamcode.autonomous.right.Positions.P3
+import org.firstinspires.ftc.teamcode.autonomous.right.Positions.JUNC
+import org.firstinspires.ftc.teamcode.autonomous.AutoBase
 import org.firstinspires.ftc.teamcode.commands.DropCone
 import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
 import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
-import org.firstinspires.ftc.teamcode.commands.PickCone
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.Pinch
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Autonomous
-class A2: AutoBase() {
+class Right: AutoBase() {
     private lateinit var drive: MecanumDrive // Initialize Drive Variable
     private lateinit var lift: Lift // Initialize Lift Variable
     private lateinit var pinch: Pinch // Initialize Pinch Variable
     private var signalPos: Pose2d = P1 // Initialize Signal
+    private var numPos = 1 // Initialize Signal
     private lateinit var scanner:  SignalScanner // Initialize Scanner (CV)
 
     override fun initialize() {
         telemetry.sendLine("Initializing Subsystems...") // Sends Telemetry Line
 
         drive = MecanumDrive(hardwareMap) // Assigns Drive Variable
-        drive.poseEstimate = A2 // Sets Drive Pose To Start Pos
+        drive.poseEstimate = START // Sets Drive Pose To Start Pos
 
-        lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT) // Assigns Lift Variable
+        lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT, OpModeType.AUTO) // Assigns Lift Variable
 
         pinch = Pinch(hardwareMap, telemetry) // Assigns Pinch Variable
 
@@ -43,43 +45,51 @@ class A2: AutoBase() {
         pinch.close() // Closes Pinch To Pick Up Preload Cone
 
         while(!isStarted){ // Scans CV during the rest of Init
-            signalPos = scanner.scanBarcode().first // Scans QR Code and Assigns it to signalPos Variable
-            telemetry.sendLine(scanner.scanBarcode().second.toString()) // Sends Telemetry of Parking Pos
-            Log.d("Pos", signalPos.toString())
+            signalPos = when(scanner.scanBarcode()){
+                1-> P1
+                2-> P2
+                3-> P3
+                else -> {P1}
+            }// Scans QR Code and Assigns it to signalPos Variable
+            telemetry.sendLine(scanner.scanBarcode().toString()) // Sends Telemetry of Parking Pos
+            numPos = scanner.scanBarcode()
         }
 
         telemetry.sendLine("Generating Trajectories...")
 
-        val goToJunction1 = drive.trajectorySequenceBuilder(A2) // Goes to position before raising lift
-            .strafeRight(27.0)
-            .lineTo(Vector2d(-57.5, 17.0))
+        val goToJunction = drive.trajectorySequenceBuilder(START) // Goes to high junction
+            .lineTo(START.vec()+Vector2d(5.0, -5.0))
+            .forward(30.0)
+            .lineToLinearHeading(JUNC)
+            .turn(Math.toRadians(7.0))
+            .turn(Math.toRadians(-7.0))
             .build()
 
-        val goToJunction2 = drive.trajectorySequenceBuilder(goToJunction1.end()) // Goes to high junction
-            .splineTo(Positions.X2.vec(), Positions.X2.heading)
-            .build()
 
-        val goToPark =
-                drive.trajectorySequenceBuilder(goToJunction2.end()) // Goes to parking positions based CV
-                    .lineTo(Vector2d(-37.5, 11.5))
-                    .turn(Math.toRadians(45.0))
+        val goToParkTemp =
+                drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
+                    .lineToLinearHeading(Pose2d(goToJunction.end().vec()+Vector2d(0.0, 10.0),Math.toRadians((0.0))))
                     .lineTo(signalPos.vec())
                     .turn(Math.toRadians(90.0))
-                    .build()
 
+        val goToPark = when(numPos){
+            3->goToParkTemp.strafeLeft(5.0).build()
+            else -> goToParkTemp.build()
+        }
 
         telemetry.sendLine("Scheduling Commands...")
 
         schedule(SequentialCommandGroup(
-            FollowTrajectorySequence(drive, goToJunction1), // Goes to first position (Corner of tile C1)
+            LiftGoToPos(lift, Lift.Positions.GROUND),
+            //FollowTrajectorySequence(drive, goToJunction1), // Goes to first position (Corner of tile C1)
             ParallelCommandGroup( // Makes everything in parenthesis run parallel (Goes to high junction and lifts the lift at the same time)
-                FollowTrajectorySequence(drive, goToJunction2), // Goes to High Junction
+                FollowTrajectorySequence(drive, goToJunction), // Goes to High Junction
                 LiftGoToPos(lift, Lift.Positions.HIGH) // Lifts the lift
             ),
             WaitCommand(500),
             DropCone(pinch), // Drops cone
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.IN_ROBOT),
+                LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 500),
                 FollowTrajectorySequence(drive, goToPark)
             ),
         ))

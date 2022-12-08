@@ -17,6 +17,6 @@ class DropCone(private val pinch: Pinch) : CommandBase() {
 
 
     override fun isFinished(): Boolean {
-        return time.milliseconds() > 1500
+        return time.milliseconds() > 700
     }
 }

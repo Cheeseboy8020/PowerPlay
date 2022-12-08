@@ -10,10 +10,13 @@ import com.arcrobotics.ftclib.command.WaitCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
 import org.firstinspires.ftc.teamcode.subsystems.Lift
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Config
+@Disabled
 @Autonomous
 class LiftPIDTuner : CommandOpMode() {
 
@@ -25,7 +28,7 @@ class LiftPIDTuner : CommandOpMode() {
 
     override fun initialize() {
 
-        lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT)
+        lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
 
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 

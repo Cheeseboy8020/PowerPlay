@@ -21,11 +21,13 @@ fun main() {
         .setColorScheme(ColorSchemeBlueDark())
         .followTrajectorySequence { drive: DriveShim ->
             drive.trajectorySequenceBuilder(A2)
-                .strafeRight(20.0)
-                .lineTo(Vector2d(-57.0, 17.0))
-                .splineTo(X2.vec(), X2.heading)
-                .splineTo(Vector2d(-38.0, 10.0), Math.toRadians(180.0))
-                .lineTo(Positions.P1.vec())
+                .strafeRight(27.0)
+                .lineTo(Vector2d(-57.5, 17.0))
+                .splineTo(Positions.X2.vec(), Positions.X2.heading)
+                .lineTo(Vector2d(-37.5, 11.5))
+                .turn(Math.toRadians(45.0))
+                .lineTo(P1.vec())
+                .turn(Math.toRadians(90.0))
                 .build()
         }
 
