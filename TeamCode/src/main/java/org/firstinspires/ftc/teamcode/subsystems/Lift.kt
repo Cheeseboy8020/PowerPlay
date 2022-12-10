@@ -29,8 +29,8 @@ class Lift(
         LOW(1700),
         GROUND(300),
         IN_ROBOT(20),
-        FIVE_STACK(750),
-        FOUR_STACK(725),
+        FIVE_STACK(775),
+        FOUR_STACK(675),
         THREE_STACK(700),
         TWO_STACK(675)
     }
@@ -52,6 +52,5 @@ class Lift(
         }
         //this.lift.direction = DcMotorSimple.Direction.REVERSE
         this.lift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        this.defaultCommand = LiftGoToPos(this, currentPosition).perpetually()
     }
 }

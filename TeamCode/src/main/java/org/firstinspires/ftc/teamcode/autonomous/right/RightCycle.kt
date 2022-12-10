@@ -61,13 +61,14 @@ class RightCycle: AutoBase() {
             .lineTo(START.vec()+Vector2d(5.0, -5.0))
             .forward(30.0)
             .lineToLinearHeading(JUNC)
-            .turn(Math.toRadians(7.0))
-            .turn(Math.toRadians(-6.0))
+            //.turn(Math.toRadians(7.0))
+            //.turn(Math.toRadians(-6.0))
             .build()
 
         val goToStack = drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
             .strafeLeft(13.0)
             .lineToLinearHeading(STACK)
+            .forward(2.0)
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToStack.end()) // Goes to parking positions based CV
@@ -78,6 +79,7 @@ class RightCycle: AutoBase() {
 
         val goToParkTemp =
                 drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
+                    .back(5.0)
                     .lineToLinearHeading(Pose2d(goToJunction.end().vec()+Vector2d(0.0, 10.0),Math.toRadians((0.0))))
                     .lineTo(signalPos.vec())
                     .turn(Math.toRadians(90.0))
@@ -99,7 +101,7 @@ class RightCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch), // Drops cone
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.FIVE_STACK, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.FIVE_STACK, 10, 1000),
                 FollowTrajectorySequence(drive, goToStack)
             ),
             PickCone(pinch),
@@ -110,7 +112,7 @@ class RightCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch),
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.FOUR_STACK, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.FOUR_STACK, 10, 1000),
                 FollowTrajectorySequence(drive, goToStack)
             ),
             PickCone(pinch),
@@ -121,7 +123,7 @@ class RightCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch),
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 1000),
                 FollowTrajectorySequence(drive, goToPark)
             )
         ))

@@ -2,17 +2,15 @@ package org.firstinspires.ftc.teamcode.autonomous.left
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
-import com.arcrobotics.ftclib.command.ParallelCommandGroup
-import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.arcrobotics.ftclib.command.WaitCommand
+import com.arcrobotics.ftclib.command.*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.autonomous.left.Positions.START
 import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P1
 import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P2
 import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P3
+import org.firstinspires.ftc.teamcode.autonomous.left.Positions.STACK
 import org.firstinspires.ftc.teamcode.autonomous.left.Positions.JUNC
 import org.firstinspires.ftc.teamcode.autonomous.AutoBase
-import org.firstinspires.ftc.teamcode.autonomous.right.Positions
 import org.firstinspires.ftc.teamcode.commands.DropCone
 import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
 import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
@@ -23,7 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.Pinch
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
-@Autonomous
+@Autonomous(name="LeftCycle")
 class LeftCycle: AutoBase() {
     private lateinit var drive: MecanumDrive // Initialize Drive Variable
     private lateinit var lift: Lift // Initialize Lift Variable
@@ -51,45 +49,43 @@ class LeftCycle: AutoBase() {
                 1-> P1
                 2-> P2
                 3-> P3
-                else -> {
-                    telemetry.sendLine("DON'T START")
-                    P1
-                }
+                else -> {P1}
             }// Scans QR Code and Assigns it to signalPos Variable
-            telemetry.clear()
             telemetry.sendLine(scanner.scanBarcode().toString()) // Sends Telemetry of Parking Pos
             numPos = scanner.scanBarcode()
         }
 
         telemetry.sendLine("Generating Trajectories...")
+
         val goToJunction = drive.trajectorySequenceBuilder(START) // Goes to high junction
             .lineTo(START.vec()+Vector2d(5.0, -5.0))
-            .forward(35.0)
+            .forward(30.0)
             .lineToLinearHeading(JUNC)
-            .turn(Math.toRadians(10.0))
-            .turn(Math.toRadians(-10.0))
+            //.turn(Math.toRadians(7.0))
+            //.turn(Math.toRadians(-6.0))
             .build()
 
         val goToStack = drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
             .strafeLeft(13.0)
-            .lineToLinearHeading(Positions.STACK)
+            .lineToLinearHeading(STACK)
+            .forward(2.0)
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToStack.end()) // Goes to parking positions based CV
-            .lineToLinearHeading(Pose2d(Positions.JUNC.vec().x, Positions.JUNC.vec().y+13, Positions.JUNC.heading))
-            .strafeRight(13.0)
+            .lineToLinearHeading(Pose2d(JUNC.vec().x, JUNC.vec().y+13, JUNC.heading))
+            .strafeLeft(13.0)
             .forward(6.0)
             .build()
 
-
         val goToParkTemp =
-                drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
-                    .lineToLinearHeading(Pose2d(goToJunction.end().vec()+Vector2d(0.0, 10.0),Math.toRadians((180.0))))
-                    .lineTo(signalPos.vec())
-                    .turn(Math.toRadians(-90.0))
+            drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
+                .back(5.0)
+                .lineToLinearHeading(Pose2d(goToJunction.end().vec()+Vector2d(0.0, 10.0),Math.toRadians((0.0))))
+                .lineTo(signalPos.vec())
+                .turn(Math.toRadians(90.0))
 
         val goToPark = when(numPos){
-            1->goToParkTemp.strafeRight(3.0).build()
+            3->goToParkTemp.strafeLeft(5.0).build()
             else -> goToParkTemp.build()
         }
 
@@ -105,7 +101,7 @@ class LeftCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch), // Drops cone
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.FIVE_STACK, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.FIVE_STACK, 10, 1000),
                 FollowTrajectorySequence(drive, goToStack)
             ),
             PickCone(pinch),
@@ -116,7 +112,7 @@ class LeftCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch),
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.FOUR_STACK, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.FOUR_STACK, 10, 1000),
                 FollowTrajectorySequence(drive, goToStack)
             ),
             PickCone(pinch),
@@ -127,7 +123,7 @@ class LeftCycle: AutoBase() {
             WaitCommand(500),
             DropCone(pinch),
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
-                LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 500),
+                LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 1000),
                 FollowTrajectorySequence(drive, goToPark)
             )
         ))

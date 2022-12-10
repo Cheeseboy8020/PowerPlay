@@ -16,6 +16,7 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
     }
 
     val liftController = PIDFController(coefficients, 0.0, 0.0, 0.1)
+    val time = ElapsedTime()
 
 
     init{
@@ -24,20 +25,23 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
     }
 
     override fun initialize() {
-        val time = ElapsedTime()
         //once
         lift.lift.power = 0.0
         liftController.reset()
         liftController.targetPosition = pos.targetPosition.toDouble()
         time.reset()
-        while (time.milliseconds() < delay) {
-        }
     }
 
     //Run repeatedly while the command is active
     override fun execute() {
         //Update the lift power with the
-        lift.lift.power = liftController.update(lift.lift.currentPosition.toDouble())
+        if (time.milliseconds() < delay)
+        {
+            lift.lift.power = 0.1
+        }
+        else {
+            lift.lift.power = liftController.update(lift.lift.currentPosition.toDouble())
+        }
     }
 
     override fun isFinished(): Boolean {
@@ -46,8 +50,10 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
     }
 
     override fun end(interrupted: Boolean) {
-        if(!interrupted){
-            lift.currentPosition = pos
+        when(pos) {
+            Lift.Positions.IN_ROBOT->lift.lift.power=0.0
+
+            else -> {lift.lift.power=0.1}
         }
     }
 }
