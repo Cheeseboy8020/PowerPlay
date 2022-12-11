@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands
 
 import android.util.Log
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
@@ -17,10 +18,13 @@ class GamepadDrive(
     private val rightX: DoubleSupplier
     override fun execute() {
         Log.w("GamepadDrive", "Executing")
-        drive.drive.leftFront.power = (leftY.asDouble * 0.75) + (leftX.asDouble * 0.75) + (rightX.asDouble * 0.75)
-        drive.drive.leftRear.power = (leftY.asDouble * 0.75) - (leftX.asDouble * 0.75) + (rightX.asDouble * 0.75)
-        drive.drive.rightFront.power = (leftY.asDouble * 0.75) - (leftX.asDouble * 0.75) - (rightX.asDouble * 0.75)
-        drive.drive.rightRear.power = (leftY.asDouble * 0.75) + (leftX.asDouble * 0.75) - (rightX.asDouble * 0.75)
+        drive.setWeightedDrivePower(
+            Pose2d(
+                leftY.asDouble,
+                -leftX.asDouble,
+                -rightX.asDouble
+            )
+        )
     }
 
     init {

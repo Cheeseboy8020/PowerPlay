@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.test
 
 import android.util.Log
+import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.alphago.agDistanceLocalization.geometry.Pose
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.Trigger
@@ -48,7 +50,7 @@ class TeleOp: CommandOpMode() {
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.THREE_STACK))
 
-        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
             .whenPressed(LiftGoToPos(lift, Lift.Positions.TWO_STACK))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
@@ -57,12 +59,12 @@ class TeleOp: CommandOpMode() {
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(InstantCommand(pinch::close, pinch))
 
-        Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
-            .whileActiveContinuous(InstantCommand({lift.lift.power = gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)}, lift))
+        Trigger{gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
+            .whileActiveContinuous(InstantCommand({lift.lift.power = gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad2  .getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)}, lift))
             .whenInactive(InstantCommand({lift.lift.power = 0.0}, lift))
 
         schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
 
-        register(lift)
+        register(lift, drive)
     }
 }

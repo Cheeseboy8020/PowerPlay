@@ -59,22 +59,22 @@ class LeftCycle: AutoBase() {
 
         val goToJunction = drive.trajectorySequenceBuilder(START) // Goes to high junction
             .lineTo(START.vec()+Vector2d(5.0, -5.0))
-            .forward(30.0)
+            .forward(31.0)
             .lineToLinearHeading(JUNC)
             //.turn(Math.toRadians(7.0))
             //.turn(Math.toRadians(-6.0))
             .build()
 
         val goToStack = drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
-            .strafeLeft(13.0)
+            .strafeRight(13.0)
             .lineToLinearHeading(STACK)
-            .forward(2.0)
+            .forward(5.0)
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToStack.end()) // Goes to parking positions based CV
             .lineToLinearHeading(Pose2d(JUNC.vec().x, JUNC.vec().y+13, JUNC.heading))
             .strafeLeft(13.0)
-            .forward(6.0)
+            .forward(3.5)
             .build()
 
         val goToParkTemp =
@@ -82,10 +82,9 @@ class LeftCycle: AutoBase() {
                 .back(5.0)
                 .lineToLinearHeading(Pose2d(goToJunction.end().vec()+Vector2d(0.0, 10.0),Math.toRadians((0.0))))
                 .lineTo(signalPos.vec())
-                .turn(Math.toRadians(90.0))
 
         val goToPark = when(numPos){
-            3->goToParkTemp.strafeLeft(5.0).build()
+            1->goToParkTemp.build()
             else -> goToParkTemp.build()
         }
 

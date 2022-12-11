@@ -31,8 +31,8 @@ class Lift(
         IN_ROBOT(20),
         FIVE_STACK(775),
         FOUR_STACK(675),
-        THREE_STACK(700),
-        TWO_STACK(675)
+        THREE_STACK(575),
+        TWO_STACK(450)
     }
 
     var currentPosition = Positions.IN_ROBOT

@@ -31,17 +31,17 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
 
     fun open(){
         //right
-        leftPinch.position = 0.45
+        leftPinch.position = 0.11
         //left
-        rightPinch.position = 0.74
+        rightPinch.position = 0.41
         state = PinchState.OPEN
     }
 
     fun close(){
         //right
-        leftPinch.position = 0.4
+        leftPinch.position = 0.06
         //left
-        rightPinch.position = 0.79
+        rightPinch.position = 0.46
         state = PinchState.CLOSED
     }
 }
