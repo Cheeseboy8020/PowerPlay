@@ -61,21 +61,21 @@ class RightCycle: AutoBase() {
             .lineTo(START.vec()+Vector2d(5.0, -5.0))
             .forward(31.0)
             .lineToLinearHeading(JUNC)
-            .forward(2.0)
+            //.forward(2.0)
             //.turn(Math.toRadians(7.0))
             //.turn(Math.toRadians(-6.0))
             .build()
 
         val goToStack = drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
-            .strafeLeft(13.0)
+            .strafeLeft(10.0)
             .lineToLinearHeading(STACK)
             .forward(2.0)
             .build()
 
         val goToJunction2 = drive.trajectorySequenceBuilder(goToStack.end()) // Goes to parking positions based CV
             .lineToLinearHeading(Pose2d(JUNC.vec().x, JUNC.vec().y+13, JUNC.heading))
-            .strafeRight(18.0)
-            .forward(7.0)
+            .strafeRight(13.0)
+            .forward(3.0)
             .build()
 
         val goToParkTemp =

@@ -63,6 +63,7 @@ class LeftCycle: AutoBase() {
             .lineToLinearHeading(JUNC)
             //.turn(Math.toRadians(7.0))
             //.turn(Math.toRadians(-6.0))
+            .forward(6.0)
             .build()
 
         val goToStack = drive.trajectorySequenceBuilder(goToJunction.end()) // Goes to parking positions based CV
@@ -74,7 +75,7 @@ class LeftCycle: AutoBase() {
         val goToJunction2 = drive.trajectorySequenceBuilder(goToStack.end()) // Goes to parking positions based CV
             .lineToLinearHeading(Pose2d(JUNC.vec().x, JUNC.vec().y+13, JUNC.heading))
             .strafeLeft(13.0)
-            .forward(3.5)
+            .forward(5.5)
             .build()
 
         val goToParkTemp =

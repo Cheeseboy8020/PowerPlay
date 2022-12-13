@@ -59,8 +59,8 @@ class TeleOp: CommandOpMode() {
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(InstantCommand(pinch::close, pinch))
 
-        Trigger{gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
-            .whileActiveContinuous(InstantCommand({lift.lift.power = gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad2  .getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)}, lift))
+        Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
+            .whileActiveContinuous(InstantCommand({lift.lift.power = (gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/2.0}, lift)   )
             .whenInactive(InstantCommand({lift.lift.power = 0.0}, lift))
 
         schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))

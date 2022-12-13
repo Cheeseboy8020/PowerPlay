@@ -24,13 +24,13 @@ class Lift(
 
 
     enum class Positions(val targetPosition: Int) {
-        HIGH(3500),
+        HIGH(3600),
         MEDIUM(2600),
         LOW(1700),
         GROUND(300),
         IN_ROBOT(20),
-        FIVE_STACK(775),
-        FOUR_STACK(675),
+        FIVE_STACK(850),
+        FOUR_STACK(750),
         THREE_STACK(575),
         TWO_STACK(450)
     }
