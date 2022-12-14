@@ -22,5 +22,4 @@ abstract class AutoBase : CommandOpMode() {
             update()
         }
     }
-
 }
