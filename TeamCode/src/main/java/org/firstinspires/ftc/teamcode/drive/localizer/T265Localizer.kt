@@ -36,6 +36,7 @@ class T265Localizer(drive: MecanumDrive, hardwareMap: HardwareMap): Localizer {
     var poseConfidence: PoseConfidence
         get() = up.confidence
 
+
     override fun update() {
         encoderLoc.update()
         slamra!!.sendOdometry(encoderLoc.poseVelocity!!.x*0.0254, encoderLoc.poseVelocity!!.y*0.0254)
