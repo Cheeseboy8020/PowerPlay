@@ -5,18 +5,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
-    companion object{
-        const val THRESHOLD = 2.0
-        const val DROP_TIME_TOP = 1000
-        const val DROP_TIME = 1500
-        const val RESET_POS_1 = 0.5
-        const val RESET_POS_2 = 0.5
-    }
-
-    //Creates 2 box servos
+class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
     var leftPinch: Servo
     var rightPinch: Servo
+    var arm: Servo
+    var extLeft: Servo
+    var extRight: Servo
 
     enum class PinchState{
         OPEN, CLOSED
@@ -25,8 +19,11 @@ class Pinch(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase(
     var state = PinchState.CLOSED
 
     init {
-        this.leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
-        this.rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
+        leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
+        rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
+        arm = hardwareMap.get(Servo::class.java, "intakeArm")
+        extLeft = hardwareMap.get(Servo::class.java, "extLeft")
+        extRight = hardwareMap.get(Servo::class.java, "extRight")
     }
 
     fun open(){

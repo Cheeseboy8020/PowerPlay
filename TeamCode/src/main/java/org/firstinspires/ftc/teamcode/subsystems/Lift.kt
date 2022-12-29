@@ -10,17 +10,13 @@ import org.firstinspires.ftc.teamcode.util.OpModeType
 
 class Lift(
     hardwareMap: HardwareMap,
-    private val telemetry: Telemetry? = null,
     startingPosition: Positions,
     opModeType: OpModeType
 ) : SubsystemBase() {
-    companion object{
-        @JvmField
-        var liftPosition = 0
-    }
 
 
-    val lift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "lift")
+    val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
+    val rightLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "rightLift")
 
 
     enum class Positions(val targetPosition: Int) {
@@ -28,29 +24,27 @@ class Lift(
         MEDIUM(2600),
         LOW(1700),
         GROUND(300),
-        IN_ROBOT(20),
-        FIVE_STACK(850),
-        FOUR_STACK(750),
-        THREE_STACK(575),
-        TWO_STACK(450)
+        IN_ROBOT(0)
     }
 
     var currentPosition = Positions.IN_ROBOT
-    var targetVelo = 0.0
-
 
     init {
         this.currentPosition = startingPosition
         when(opModeType){
             OpModeType.AUTO -> {
-                this.lift.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-                this.lift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+                this.leftLift.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+                this.rightLift.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+                this.leftLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+                this.rightLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
             else -> {
-                this.lift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+                this.leftLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+                this.rightLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
         }
-        //this.lift.direction = DcMotorSimple.Direction.REVERSE
-        this.lift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        //this.leftLift.direction = DcMotorSimple.Direction.REVERSE
+        this.leftLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        this.rightLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }
 }

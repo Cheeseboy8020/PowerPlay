@@ -26,7 +26,7 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
 
     override fun initialize() {
         //once
-        lift.lift.power = 0.0
+        lift.leftLift.power = 0.0
         liftController.reset()
         liftController.targetPosition = pos.targetPosition.toDouble()
         time.reset()
@@ -37,23 +37,23 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
         //Update the lift power with the
         if (time.milliseconds() < delay)
         {
-            lift.lift.power = 0.1
+            lift.leftLift.power = 0.1
         }
         else {
-            lift.lift.power = liftController.update(lift.lift.currentPosition.toDouble())
+            lift.leftLift.power = liftController.update(lift.leftLift.currentPosition.toDouble())
         }
     }
 
     override fun isFinished(): Boolean {
         //End if the lift position is within the tolerance
-        return abs(lift.lift.currentPosition - pos.targetPosition) < tolerance
+        return abs(lift.leftLift.currentPosition - pos.targetPosition) < tolerance
     }
 
     override fun end(interrupted: Boolean) {
         when(pos) {
-            Lift.Positions.IN_ROBOT->lift.lift.power=0.0
+            Lift.Positions.IN_ROBOT->lift.leftLift.power=0.0
 
-            else -> {lift.lift.power=0.1}
+            else -> {lift.leftLift.power=0.1}
         }
     }
 }

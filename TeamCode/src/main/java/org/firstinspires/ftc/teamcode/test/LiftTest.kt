@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad
 
 @TeleOp
 @Disabled
-class LiftTest: LinearOpMode() {
+class iftTest: LinearOpMode() {
     lateinit var lift: DcMotorEx
     override fun runOpMode() {
         lift = hardwareMap.get(DcMotorEx::class.java, "lift")
@@ -24,6 +24,8 @@ class LiftTest: LinearOpMode() {
                 gamepad1.right_trigger.toDouble(),
                 Gamepad.RUMBLE_DURATION_CONTINUOUS
             )
+            telemetry.addData("lift", lift.currentPosition)
+            telemetry.update()
         }
     }
 

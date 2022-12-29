@@ -18,14 +18,14 @@ import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
-import org.firstinspires.ftc.teamcode.subsystems.Pinch
+import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Autonomous
 class Right: AutoBase() {
     private lateinit var drive: MecanumDrive // Initialize Drive Variable
     private lateinit var lift: Lift // Initialize Lift Variable
-    private lateinit var pinch: Pinch // Initialize Pinch Variable
+    private lateinit var intake: Intake // Initialize Pinch Variable
     private var signalPos: Pose2d = P1 // Initialize Signal
     private var numPos = 1 // Initialize Signal
     private lateinit var scanner:  SignalScanner // Initialize Scanner (CV)
@@ -38,11 +38,11 @@ class Right: AutoBase() {
 
         lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT, OpModeType.AUTO) // Assigns Lift Variable
 
-        pinch = Pinch(hardwareMap, telemetry) // Assigns Pinch Variable
+        intake = Intake(hardwareMap, telemetry) // Assigns Pinch Variable
 
         scanner = SignalScanner(hardwareMap, telemetry) // Assigns Scanner Variable
 
-        pinch.close() // Closes Pinch To Pick Up Preload Cone
+        intake.close() // Closes Pinch To Pick Up Preload Cone
 
         while(!isStarted){ // Scans CV during the rest of Init
             signalPos = when(scanner.scanBarcode()){
@@ -87,7 +87,7 @@ class Right: AutoBase() {
                 LiftGoToPos(lift, Lift.Positions.HIGH) // Lifts the lift
             ),
             WaitCommand(500),
-            DropCone(pinch), // Drops cone
+            DropCone(intake), // Drops cone
             ParallelCommandGroup( // Lowers lift while going to parking position at the time.
                 LiftGoToPos(lift, Lift.Positions.IN_ROBOT, 10, 500),
                 FollowTrajectorySequence(drive, goToPark)
