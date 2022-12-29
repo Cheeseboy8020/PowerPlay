@@ -50,21 +50,21 @@ class DepthTest: LinearOpMode() {
             })
 
         FtcDashboard.getInstance().startCameraStream(webcam, 10.0)
-        if(isStopRequested){
+        /*if(isStopRequested){
             T265Localizer.slamra!!.stop()
-        }
+        }*/
 
         waitForStart()
         while (opModeIsActive()) { }
-        T265Localizer.slamra!!.stop()
+        //T265Localizer.slamra!!.stop()
         if(isStopRequested){
-            T265Localizer.slamra!!.stop()
+            //T265Localizer.slamra!!.stop()
         }
     }
 }
 
 class DepthPipeline(val hardwareMap: HardwareMap): OpenCvPipeline() {
-    init {
+    /*init {
         Log.d("Depth", "Started Init")
         T265Localizer.slamra = T265Camera(
             Transform2d(
@@ -75,7 +75,7 @@ class DepthPipeline(val hardwareMap: HardwareMap): OpenCvPipeline() {
         Log.d("Depth", "Created Cam")
         T265Localizer.slamra!!.start()
         Log.d("Depth", "Started Cam")
-    }
+    }*/
     override fun processFrame(input: Mat?): Mat {
         Log.d("Depth", "Starting Depth Calc")
         //T265Localizer.slamra!!.getDepthMat()
