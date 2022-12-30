@@ -6,8 +6,11 @@ import com.acmerobotics.roadrunner.kinematics.Kinematics.calculateMotorFeedforwa
 
 class PositionPIDFController(pid: PIDCoefficients?, private var kV: Double = 0.0, private var kA: Double = 0.0, private var kStatic: Double = 0.0) {
     var controller: PIDFController?
-    private var lastPosition = Double.NaN
-    private var lastVelocity = Double.NaN
+    val MOTOR_VELO_PID = PIDCoefficients(0.0, 0.0, 0.0)
+    val velokV = 0.0
+    val velokA = 0.0
+    val velokStatic = 0.0
+    val veloController = VelocityPIDFController(MOTOR_VELO_PID, velokV, velokA, velokStatic)
 
     init{
         controller = PIDFController(pid!!)
@@ -16,22 +19,15 @@ class PositionPIDFController(pid: PIDCoefficients?, private var kV: Double = 0.0
 
 
     fun update(measuredPosition: Double, measuredVelocity: Double): Double {
-        if (lastPosition.isNaN()) {
-            lastPosition = measuredPosition
-        }
-        if (lastVelocity.isNaN()) {
-            lastVelocity = measuredVelocity
-        }
         val correction = controller!!.update(measuredPosition, measuredVelocity)
         val feedforward = calculateMotorFeedforward(
             controller!!.targetPosition, controller!!.targetVelocity, kV, kA, kStatic
         )
-        return correction + feedforward
+        veloController.setTargetVelocity(correction+feedforward)
+        return veloController.update(measuredPosition, measuredVelocity)
     }
 
     fun reset() {
         controller!!.reset()
-        lastPosition = Double.NaN
-        lastVelocity = Double.NaN
     }
 }

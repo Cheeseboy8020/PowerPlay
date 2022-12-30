@@ -19,14 +19,11 @@ import org.firstinspires.ftc.teamcode.util.VelocityPIDFController
 class PosLiftTuner : LinearOpMode() {
     private val dashboard = FtcDashboard.getInstance()
     private val posTimer = ElapsedTime()
-    val MOTOR_VELO_PID = PIDCoefficients(0.0, 0.0, 0.0)
-    val velokV = 0.0
-    val velokA = 0.0
-    val velokStatic = 0.0
+
 
     override fun runOpMode() {
 
-        val veloController = VelocityPIDFController(MOTOR_VELO_PID, velokV, velokA, velokStatic)
+
 
         // Change my id
         val myMotor1 = hardwareMap.get(DcMotorEx::class.java, "lift")
@@ -67,14 +64,9 @@ class PosLiftTuner : LinearOpMode() {
             val motorVelo = myMotor1.velocity
             val targetVelo: Double = posController.update(motorPos, motorVelo)
             telemetry.addData("velo", targetVelo)
-            veloController.setTargetVelocity(targetVelo)
-            veloController.setTargetAcceleration((targetVelo - lastTargetVelo) / posTimer.seconds())
-            lastTargetVelo = targetVelo
             posTimer.reset()
-            val veloCorrection = veloController.update(motorPos, motorVelo)
-            telemetry.addData("veloCorrection", veloCorrection)
-            myMotor1.power = veloCorrection
-            myMotor2.power = veloCorrection
+            myMotor1.power = targetVelo
+            myMotor2.power = targetVelo
             if (lastKv != kV || lastKa != kA || lastKstatic != kStatic) {
                 lastKv = kV
                 lastKa = kA
