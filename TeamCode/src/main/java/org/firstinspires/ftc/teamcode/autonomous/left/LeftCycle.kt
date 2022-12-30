@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Autonomous(name="LeftCycle")
 class LeftCycle: AutoBase() {
+    /*
     private lateinit var drive: MecanumDrive // Initialize Drive Variable
     private lateinit var lift: Lift // Initialize Lift Variable
     private lateinit var intake: Intake // Initialize Pinch Variable
@@ -36,7 +37,7 @@ class LeftCycle: AutoBase() {
         drive = MecanumDrive(hardwareMap) // Assigns Drive Variable
         drive.poseEstimate = START // Sets Drive Pose To Start Pos
 
-        lift = Lift(hardwareMap, telemetry, Lift.Positions.IN_ROBOT, OpModeType.AUTO) // Assigns Lift Variable
+        lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO) // Assigns Lift Variable
 
         intake = Intake(hardwareMap, telemetry) // Assigns Pinch Variable
 
@@ -127,5 +128,5 @@ class LeftCycle: AutoBase() {
                 FollowTrajectorySequence(drive, goToPark)
             )
         ))
-    }
+    }*/
 }

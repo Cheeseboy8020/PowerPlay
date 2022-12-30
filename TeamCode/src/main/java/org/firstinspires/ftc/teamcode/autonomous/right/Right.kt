@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Autonomous
 class Right: AutoBase() {
-    private lateinit var drive: MecanumDrive // Initialize Drive Variable
+    /*private lateinit var drive: MecanumDrive // Initialize Drive Variable
     private lateinit var lift: Lift // Initialize Lift Variable
     private lateinit var intake: Intake // Initialize Pinch Variable
     private var signalPos: Pose2d = P1 // Initialize Signal
@@ -93,5 +93,5 @@ class Right: AutoBase() {
                 FollowTrajectorySequence(drive, goToPark)
             ),
         ))
-    }
+    }*/
 }

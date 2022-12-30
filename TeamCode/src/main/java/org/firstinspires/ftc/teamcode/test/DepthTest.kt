@@ -50,9 +50,9 @@ class DepthTest: LinearOpMode() {
             })
 
         FtcDashboard.getInstance().startCameraStream(webcam, 10.0)
-        /*if(isStopRequested){
-            T265Localizer.slamra!!.stop()
-        }*/
+        if(isStopRequested){
+            T265Localizer.
+        }
 
         waitForStart()
         while (opModeIsActive()) { }

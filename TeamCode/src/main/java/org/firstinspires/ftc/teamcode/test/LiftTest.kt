@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.Gamepad
 
 @TeleOp
-@Disabled
-class iftTest: LinearOpMode() {
+//@Disabled
+class LiftTest: LinearOpMode() {
     lateinit var lift: DcMotorEx
     override fun runOpMode() {
         lift = hardwareMap.get(DcMotorEx::class.java, "lift")

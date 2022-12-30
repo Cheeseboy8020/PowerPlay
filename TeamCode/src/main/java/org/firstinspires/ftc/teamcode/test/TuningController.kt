@@ -81,22 +81,21 @@ class TuningController {
     }
 
     companion object {
-        @JvmStatic
-        var MOTOR_MAX_POS = 3500.0
-        var TESTING_MAX_POS = 0.9 * MOTOR_MAX_POS
-        var TESTING_MIN_POS = 0.3 * MOTOR_MAX_POS
+        @JvmField var MOTOR_MAX_POS = 3400.0
+        @JvmField  var TESTING_MAX_POS = 0.9 * MOTOR_MAX_POS
+        @JvmField var TESTING_MIN_POS = 0.3 * MOTOR_MAX_POS
 
         // These are prefixed with "STATE1", "STATE2", etc. because Dashboard displays variables in
         // alphabetical order. Thus, we preserve the actual order of the process
         // Then we append Z just because we want it to show below the MOTOR_ and TESTING_ because
         // these settings aren't as important
-        var ZSTATE1_RAMPING_UP_DURATION = 3.5
-        var ZSTATE2_COASTING_1_DURATION = 4.0
-        var ZSTATE3_RAMPING_DOWN_DURATION = 2.0
-        var ZSTATE4_COASTING_2_DURATION = 2.0
-        var ZSTATE5_RANDOM_1_DURATION = 2.0
-        var ZSTATE6_RANDOM_2_DURATION = 2.0
-        var ZSTATE7_RANDOM_3_DURATION = 2.0
-        var ZSTATE8_REST_DURATION = 1.0
+        @JvmField var ZSTATE1_RAMPING_UP_DURATION = 3.5
+        @JvmField var ZSTATE2_COASTING_1_DURATION = 4.0
+        @JvmField var ZSTATE3_RAMPING_DOWN_DURATION = 2.0
+        @JvmField var ZSTATE4_COASTING_2_DURATION = 2.0
+        @JvmField var ZSTATE5_RANDOM_1_DURATION = 2.0
+        @JvmField var ZSTATE6_RANDOM_2_DURATION = 2.0
+        @JvmField var ZSTATE7_RANDOM_3_DURATION = 2.0
+        @JvmField var ZSTATE8_REST_DURATION = 1.0
     }
 }
