@@ -10,15 +10,24 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.subsystems.Lift.Companion.rpmToTicksPerSecond
 import org.firstinspires.ftc.teamcode.util.PositionPIDFController
+import org.firstinspires.ftc.teamcode.util.VelocityPIDFController
 
 @Config
 @TeleOp
-class LiftTuner : LinearOpMode() {
+class PosLiftTuner : LinearOpMode() {
     private val dashboard = FtcDashboard.getInstance()
     private val posTimer = ElapsedTime()
+    val MOTOR_VELO_PID = PIDCoefficients(0.0, 0.0, 0.0)
+    val velokV = 0.0
+    val velokA = 0.0
+    val velokStatic = 0.0
 
     override fun runOpMode() {
+
+        val veloController = VelocityPIDFController(MOTOR_VELO_PID, velokV, velokA, velokStatic)
+
         // Change my id
         val myMotor1 = hardwareMap.get(DcMotorEx::class.java, "lift")
         val myMotor2 = hardwareMap.get(DcMotorEx::class.java, "lift2")
@@ -31,11 +40,12 @@ class LiftTuner : LinearOpMode() {
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
-        val batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next()
         var posController = PositionPIDFController(MOTOR_POS_PID, kV, kA, kStatic)
-        val tuningController = TuningController()
-        posController.controller!!.setOutputBounds(-3500.0, 3500.0)
+        val posTuningController = PosTuningController()
+        posController.controller!!.setOutputBounds(rpmToTicksPerSecond(-5960/((68.0/13)*(84.0/29)*(84.0/29))), rpmToTicksPerSecond(
+            5960/((68.0/13)*(84.0/29)*(84.0/29))))
         var lastTargetPos = 0.0
+        var lastTargetVelo = 0.0
         var lastKv = kV
         var lastKa = kA
         var lastKstatic = kStatic
@@ -45,21 +55,26 @@ class LiftTuner : LinearOpMode() {
         telemetry.clearAll()
         waitForStart()
         if (isStopRequested) return
-        tuningController.start()
+        posTuningController.start()
         posTimer.reset()
         while (!isStopRequested && opModeIsActive()) {
-            val targetPos: Double = tuningController.update()
+            val targetPos: Double = posTuningController.update()
             posController.controller!!.targetPosition = targetPos
             posController.controller!!.targetVelocity = (targetPos - lastTargetPos) / posTimer.seconds()
-            posTimer.reset()
             lastTargetPos = targetPos
             telemetry.addData("targetPosition", targetPos)
             val motorPos = myMotor1.currentPosition.toDouble()
             val motorVelo = myMotor1.velocity
-            val velo: Double = posController.update(motorPos, motorVelo)
-            telemetry.addData("velo", velo)
-            myMotor1.velocity = velo
-            myMotor2.velocity = velo
+            val targetVelo: Double = posController.update(motorPos, motorVelo)
+            telemetry.addData("velo", targetVelo)
+            veloController.setTargetVelocity(targetVelo)
+            veloController.setTargetAcceleration((targetVelo - lastTargetVelo) / posTimer.seconds())
+            lastTargetVelo = targetVelo
+            posTimer.reset()
+            val veloCorrection = veloController.update(motorPos, motorVelo)
+            telemetry.addData("veloCorrection", veloCorrection)
+            myMotor1.power = veloCorrection
+            myMotor2.power = veloCorrection
             if (lastKv != kV || lastKa != kA || lastKstatic != kStatic) {
                 lastKv = kV
                 lastKa = kA
@@ -69,7 +84,7 @@ class LiftTuner : LinearOpMode() {
             telemetry.addData("position", motorPos)
             telemetry.addData("error", targetPos - motorPos)
             telemetry.addData(
-                "upperBound", TuningController.TESTING_MAX_POS * 1.15
+                "upperBound", PosTuningController.TESTING_MAX_POS * 1.15
             )
             telemetry.addData("lowerBound", 0)
             telemetry.update()
@@ -78,7 +93,7 @@ class LiftTuner : LinearOpMode() {
 
     companion object {
         @JvmField var MOTOR_POS_PID = PIDCoefficients(0.0, 0.0, 0.0)
-        @JvmField var kV: Double = 1 / TuningController.MOTOR_MAX_POS
+        @JvmField var kV: Double = 1 / PosTuningController.MOTOR_MAX_POS
         @JvmField var kA = 0.0
         @JvmField var kStatic = 0.0
     }

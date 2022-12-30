@@ -13,6 +13,7 @@ import com.spartronics4915.lib.T265Camera
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer
+import org.firstinspires.ftc.teamcode.drive.localizer.toFtcLib
 import org.opencv.core.Mat
 import org.openftc.easyopencv.*
 
@@ -51,34 +52,34 @@ class DepthTest: LinearOpMode() {
 
         FtcDashboard.getInstance().startCameraStream(webcam, 10.0)
         if(isStopRequested){
-            T265Localizer.
+            T265Localizer.slamera!!.stop()
         }
 
         waitForStart()
         while (opModeIsActive()) { }
-        //T265Localizer.slamra!!.stop()
+        T265Localizer.slamera!!.stop()
         if(isStopRequested){
-            //T265Localizer.slamra!!.stop()
+            T265Localizer.slamera!!.stop()
         }
     }
 }
 
 class DepthPipeline(val hardwareMap: HardwareMap): OpenCvPipeline() {
-    /*init {
+    init {
         Log.d("Depth", "Started Init")
-        T265Localizer.slamra = T265Camera(
-            Transform2d(
-                Translation2d(T265Localizer.xOffset *0.0254, T265Localizer.yOffset *0.0254), Rotation2d(Math.toRadians(
-                    T265Localizer.hOffset
-                ))
-            ), 0.1, hardwareMap.appContext)
+        T265Localizer.slamera = T265Camera(
+                Transform2d(
+                    T265Localizer.cameraRobotOffset.toFtcLib().translation,
+                    T265Localizer.cameraRobotOffset.toFtcLib().rotation
+                ), 0.8, hardwareMap.appContext
+                )
         Log.d("Depth", "Created Cam")
-        T265Localizer.slamra!!.start()
+        T265Localizer.slamera!!.start()
         Log.d("Depth", "Started Cam")
-    }*/
+    }
     override fun processFrame(input: Mat?): Mat {
         Log.d("Depth", "Starting Depth Calc")
-        //T265Localizer.slamra!!.getDepthMat()
+        T265Localizer.slamera!!.getDepthMat()
         return input!! //T265Localizer.slamra!!.depthMat
     }
 

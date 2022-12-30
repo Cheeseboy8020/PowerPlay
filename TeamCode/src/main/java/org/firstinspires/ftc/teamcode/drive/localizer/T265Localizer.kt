@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.localization.Localizer
+import com.alphago.agDistanceLocalization.geometry.toDegrees
 import com.arcrobotics.ftclib.geometry.Rotation2d
 import com.arcrobotics.ftclib.geometry.Transform2d
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds
@@ -15,7 +16,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.spartronics4915.lib.T265Camera
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.inToM
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.mToIn
+import java.lang.Math.pow
 import java.util.function.Consumer
+import kotlin.math.pow
 
 /**
  * Convert a RoadRunner Pose2d to an FTCLib Pose2d and convert inches to meters.
@@ -59,15 +62,13 @@ fun ChassisSpeeds.toRoadRunner(): Pose2d {
 @Config
 class T265Localizer(
     hardwareMap: HardwareMap,
-    odometryCovariance: Double,
-    val drive: MecanumDrive
+    var odometryCovariance: Double,
+    val drive: MecanumDrive, var enableMSE: Boolean = true
 ): Localizer, Consumer<T265Camera.CameraUpdate> {
     val tag = "ftc265"
 
-    private var lastCameraRobotOffset = cameraRobotOffset
+    var lastCameraRobotOffset = cameraRobotOffset
 
-
-    private val slamera: T265Camera
 
     // LOCKS //
     private object UpdateMutex
@@ -114,7 +115,7 @@ class T265Localizer(
         set(value) {
             lastUpdate.pose = value
             val temp = value.toFtcLib()
-            slamera.setPose(
+            slamera!!.setPose(
                 com.arcrobotics.ftclib.geometry.Pose2d(
                     temp.translation.rotateBy(Rotation2d(cameraRobotOffset.heading)),
                     temp.rotation
@@ -131,26 +132,34 @@ class T265Localizer(
      * Completes a single localization update.
      */
     override fun update() {
+        encoderLoc.update()
         val odometryVelocity = odometryVelocityCallback?.invoke()
         if (odometryVelocity != null) {
-            slamera.sendOdometry(
+            slamera!!.sendOdometry(
                 odometryVelocity.x * inToM,
                 odometryVelocity.y * inToM
             )
+            if (enableMSE) {
+                if (lastUpdate.confidence == T265Camera.PoseConfidence.High) {
+                    odometryCovariance += ((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
+                            (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
+                            (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
+                            3
+                } else {
+                    odometryCovariance -= ((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
+                            (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
+                            (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
+                            3
+                }
+            }
         }
-    }
 
-    /*override fun loop() {
-        if (lastCameraRobotOffset != cameraRobotOffset) {
-            val cameraRobotOffsetPose = cameraRobotOffset.pose2d.toFtcLib()
-            slamera.setOdometryInfo(
-                Transform2d(
-                    cameraRobotOffsetPose.translation,
-                    cameraRobotOffsetPose.rotation
-                ), odometryCovariance
-            )
-        }
-    }*/
+        slamera!!.setOdometryInfo(
+            cameraRobotOffset.toFtcLib().translation.x.toFloat(),
+            cameraRobotOffset.toFtcLib().translation.y.toFloat(),
+            cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
+            odometryCovariance)
+    }
 
     init {
         Log.d(tag, "Initializing T265")
@@ -168,9 +177,9 @@ class T265Localizer(
         }
         slamera = persistentSlamera!!
         sleep(1000)
-        if (!slamera.isStarted) {
+        if (!slamera!!.isStarted) {
             Log.i(tag, "Starting camera...")
-            slamera.start(this)
+            slamera!!.start(this)
         } else {
             Log.i(tag, "Camera was already started.")
         }
@@ -186,6 +195,7 @@ class T265Localizer(
 
         // TODO: add logging for the direct values of the camera
         private var persistentSlamera: T265Camera? = null
+        var slamera: T265Camera? = null
     }
 
     /**

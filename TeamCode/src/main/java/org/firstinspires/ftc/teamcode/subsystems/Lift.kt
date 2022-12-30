@@ -14,6 +14,12 @@ class Lift(
     opModeType: OpModeType
 ) : SubsystemBase() {
 
+    companion object{
+        @JvmStatic fun rpmToTicksPerSecond(rpm: Double): Double {
+            return rpm * 28*(68.0/13)*(84.0/29)*(84.0/29)/60
+        }
+    }
+
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
     val rightLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "rightLift")
