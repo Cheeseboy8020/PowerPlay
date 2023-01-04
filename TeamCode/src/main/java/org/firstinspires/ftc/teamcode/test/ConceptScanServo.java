@@ -59,6 +59,7 @@ public class ConceptScanServo extends LinearOpMode {
 
     // Define class members
     Servo   servo;
+    //Servo   servo2;
     double  position = (MAX_POS - MIN_POS) / 2; // Start at halfway position
     boolean rampUp = true;
 
@@ -68,7 +69,7 @@ public class ConceptScanServo extends LinearOpMode {
 
         // Connect to servo (Assume Robot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
-        servo = hardwareMap.get(Servo.class, "leftPinch");
+        servo = hardwareMap.get(Servo.class, "liftArm");
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to scan Servo." );
@@ -104,6 +105,7 @@ public class ConceptScanServo extends LinearOpMode {
 
             // Set the servo to the new position and pause;
             servo.setPosition(position);
+            //servo2.setPosition(position);
             sleep(CYCLE_MS);
             idle();
         }
