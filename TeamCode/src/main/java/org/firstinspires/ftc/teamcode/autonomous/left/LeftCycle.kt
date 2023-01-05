@@ -1,25 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.left
 
-import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.geometry.Vector2d
-import com.arcrobotics.ftclib.command.*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.START
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P1
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P2
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.P3
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.STACK
-import org.firstinspires.ftc.teamcode.autonomous.left.Positions.JUNC
 import org.firstinspires.ftc.teamcode.autonomous.AutoBase
-import org.firstinspires.ftc.teamcode.commands.DropCone
-import org.firstinspires.ftc.teamcode.commands.FollowTrajectorySequence
-import org.firstinspires.ftc.teamcode.commands.LiftGoToPos
-import org.firstinspires.ftc.teamcode.commands.PickCone
-import org.firstinspires.ftc.teamcode.cv.SignalScanner
-import org.firstinspires.ftc.teamcode.subsystems.Lift
-import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
-import org.firstinspires.ftc.teamcode.subsystems.Intake
-import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Autonomous(name="LeftCycle")
 class LeftCycle: AutoBase() {
