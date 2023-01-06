@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
@@ -38,8 +39,6 @@ public class FollowerPIDTuner extends LinearOpMode {
 
         waitForStart();
 
-        if (isStopRequested()) return;
-
         while (!isStopRequested()) {
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                     .forward(DISTANCE)
@@ -52,6 +51,10 @@ public class FollowerPIDTuner extends LinearOpMode {
                     .turn(Math.toRadians(90))
                     .build();
             drive.followTrajectorySequence(trajSeq);
+        }
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
         }
     }
 }

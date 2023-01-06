@@ -83,7 +83,7 @@ class T265Localizer(
         while (lastUpdatesReceived == updatesReceived) { continue }
     }
 
-    var encoderLoc = MecanumDrive.MecanumLocalizer(drive)
+    var encoderLoc = MecanumDrive.MecanumLocalizer(drive, false)
 
     var odometryVelocityCallback: (() -> Vector2d)? = { encoderLoc.poseVelocity!!.vec() }
 
@@ -186,6 +186,11 @@ class T265Localizer(
         logPose(poseEstimate)
         poseEstimate = Pose2d()
         logPose(poseEstimate)
+        slamera!!.setOdometryInfo(
+            cameraRobotOffset.toFtcLib().translation.x.toFloat(),
+            cameraRobotOffset.toFtcLib().translation.y.toFloat(),
+            cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
+            odometryCovariance)
     }
 
     companion object {
@@ -195,7 +200,7 @@ class T265Localizer(
 
         // TODO: add logging for the direct values of the camera
         private var persistentSlamera: T265Camera? = null
-        var slamera: T265Camera? = null
+        @JvmField var slamera: T265Camera? = null
     }
 
     /**

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -42,6 +43,10 @@ public class LocalizationTest extends LinearOpMode {
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.update();
+        }
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
         }
     }
 }

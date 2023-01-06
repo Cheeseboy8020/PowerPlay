@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 import java.util.Objects;
 
@@ -76,6 +77,10 @@ public class MaxVelocityTuner extends LinearOpMode {
         telemetry.update();
 
         while (!isStopRequested() && opModeIsActive()) idle();
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
+        }
     }
 
     private double veloInchesToTicks(double inchesPerSec) {

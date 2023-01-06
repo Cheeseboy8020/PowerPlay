@@ -40,7 +40,7 @@ class T265Tuner : LinearOpMode() {
                     cameraRobotOffsetPose.translation.x.toFloat(),
                     cameraRobotOffsetPose.translation.y.toFloat(),
                     cameraRobotOffsetPose.rotation.radians.toFloat(),
-                    loc.odometryCovariance
+                    1.0
                     )
                 loc.lastCameraRobotOffset = cameraRobotOffset
             }

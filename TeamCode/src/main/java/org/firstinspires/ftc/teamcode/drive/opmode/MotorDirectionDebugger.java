@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 /**
  * This is a simple teleop routine for debugging your motor configuration.
@@ -92,6 +93,9 @@ public class MotorDirectionDebugger extends LinearOpMode {
             }
 
             telemetry.update();
+        }
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
         }
     }
 }

@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.MovingStatistics;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 /*
  * This routine determines the effective track width. The procedure works by executing a point turn
@@ -44,8 +45,6 @@ public class TrackWidthTuner extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-
-        if (isStopRequested()) return;
 
         telemetry.clearAll();
         telemetry.addLine("Running...");
@@ -84,6 +83,10 @@ public class TrackWidthTuner extends LinearOpMode {
 
         while (!isStopRequested()) {
             idle();
+        }
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
         }
     }
 }

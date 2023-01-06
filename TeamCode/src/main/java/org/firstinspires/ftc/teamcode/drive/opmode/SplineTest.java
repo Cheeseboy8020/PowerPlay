@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -20,8 +21,6 @@ public class SplineTest extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();
-
-        if (isStopRequested()) return;
 
         Trajectory traj = drive.trajectoryBuilder(new Pose2d())
                 .splineTo(new Vector2d(30, 30), 0)
@@ -36,5 +35,9 @@ public class SplineTest extends LinearOpMode {
                         .splineTo(new Vector2d(0, 0), Math.toRadians(180))
                         .build()
         );
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
+        }
     }
 }

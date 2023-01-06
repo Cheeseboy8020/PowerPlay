@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 /*
  * This is a simple routine to test turning capabilities.
@@ -22,8 +23,10 @@ public class TurnTest extends LinearOpMode {
 
         waitForStart();
 
-        if (isStopRequested()) return;
-
         drive.turn(Math.toRadians(ANGLE));
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
+        }
     }
 }

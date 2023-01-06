@@ -19,11 +19,24 @@ class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase
     }
 
     companion object{
+        //TODO: Figure these out
         const val LEFT_OUT_MAX = 1.0
         const val LEFT_IN_MIN = 0.3
         const val RIGHT_OUT_MAX = 0.0
         const val RIGHT_IN_MIN = 0.7
-        const val MAX_EXT = 18
+        const val MAX_EXT = 0.69 * 100.0/2.54 // Maximum extension in inches
+        // of the intake slide
+        const val EXT_OFFSET = 0.05856 * 100.0/2.54 // Offset from the center of the robot
+        const val EXT_SPEED  = 0.7/1000.0 // Rate of extension in servo position per millisecond
+        fun calcPos(robotPos: Vector2d, goal: Vector2d): Pair<Double, Double>{
+            val dist = robotPos.distTo(goal)-EXT_OFFSET
+            if(dist >= MAX_EXT) {
+                return Pair(LEFT_OUT_MAX, RIGHT_OUT_MAX)
+            }
+            val leftPos = LEFT_OUT_MAX - (LEFT_OUT_MAX - LEFT_IN_MIN) * (dist / MAX_EXT)
+            val rightPos = RIGHT_OUT_MAX + (RIGHT_IN_MIN - RIGHT_OUT_MAX) * (dist / MAX_EXT)
+            return Pair(leftPos, rightPos)
+        }
     }
 
     var state = PinchState.CLOSED
@@ -52,13 +65,15 @@ class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase
         state = PinchState.CLOSED
     }
 
-    fun extend(){
-        extLeft.position = 0.0
-        extRight.position = 1.0
+    fun retract(){
+        extLeft.position = 0.4
+        extRight.position = 0.8
     }
 
-    fun calcPos(robotPos: Vector2d, ): Pair<Double, Double>{
-
-        return Pair(0.0, 0.0)
+    fun extend(pos: Pair<Double, Double>){
+        extLeft.position = pos.first
+        extRight.position = pos.second
     }
+
+
 }

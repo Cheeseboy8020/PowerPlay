@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
 
 import java.util.Objects;
 
@@ -68,5 +69,9 @@ public class MaxAngularVeloTuner extends LinearOpMode {
         telemetry.update();
 
         while (!isStopRequested()) idle();
+
+        if(isStopRequested()){
+            T265Localizer.slamera.stop();
+        }
     }
 }

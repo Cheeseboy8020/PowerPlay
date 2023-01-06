@@ -27,23 +27,23 @@ class TeleOp: CommandOpMode() {
         Log.w("TeleOp", "Initialized Lift")
 
 
-        gamepad2.getGamepadButton(GamepadKeys.Button.X)
-            .whenPressed(LiftGoToPos(lift, Lift.Positions.LOW))
+        /*gamepad2.getGamepadButton(GamepadKeys.Button.X)
+            .whenPressed(ExtendLift(lift, Lift.Positions.LOW))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.A)
-            .whenPressed(LiftGoToPos(lift, Lift.Positions.IN_ROBOT))
+            .whenPressed(ExtendLift(lift, Lift.Positions.IN_ROBOT))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.Y)
-            .whenPressed(LiftGoToPos(lift, Lift.Positions.HIGH))
+            .whenPressed(ExtendLift(lift, Lift.Positions.HIGH))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.B)
-            .whenPressed(LiftGoToPos(lift, Lift.Positions.MEDIUM))
+            .whenPressed(ExtendLift(lift, Lift.Positions.MEDIUM))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
             .whenPressed(InstantCommand(intake::open, intake))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-            .whenPressed(InstantCommand(intake::close, intake))
+            .whenPressed(InstantCommand(intake::close, intake))*/
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
             .whileActiveContinuous(InstantCommand({lift.leftLift.power = (gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/2.0}, lift)   )

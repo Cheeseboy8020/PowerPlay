@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
 
-class ScoreCone(intake: Intake, lift: Lift, drive: MecanumDrive, stackPos: ConeStack): SequentialCommandGroup() {
-    init {
+class ScoreCone(intake: Intake, lift: Lift, drive: MecanumDrive, stackPos: Int): SequentialCommandGroup() {
+    /*init {
         addCommands(
             ParallelCommandGroup(
                 SequentialCommandGroup(
@@ -39,5 +39,5 @@ class ScoreCone(intake: Intake, lift: Lift, drive: MecanumDrive, stackPos: ConeS
                 LiftGrabCone(lift)
             )
         )
-    }
+    }*/
 }
