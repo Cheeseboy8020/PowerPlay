@@ -10,10 +10,12 @@ import org.firstinspires.ftc.teamcode.util.PositionPIDFController
 import kotlin.math.abs
 
 @Config
-class ExtendLift(val lift: Lift): CommandBase(){
+class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){
 
-    val liftController = PositionPIDFController()
+    var liftController: PositionPIDFController = PositionPIDFController(lift)
     val time = ElapsedTime()
+    var lastTime = 0.0
+    var lastVel = 0.0
 
     init{
         addRequirements(lift)
@@ -21,20 +23,30 @@ class ExtendLift(val lift: Lift): CommandBase(){
 
     override fun initialize() {
         //once
-        liftController.targetPos =
         time.reset()
+        liftController.PROFILED_PID.reset(lift.leftLift.currentPosition.toDouble(), lift.leftLift.velocity)
+        liftController.targetPos = goal
     }
 
     //Run repeatedly while the command is active
     override fun execute() {
-        //Update the lift power with the
+        val targetAccel = (liftController.PROFILED_PID.setpoint.velocity - lift.leftLift.velocity) / (time.seconds() - lastTime)
+        lift.setPower(liftController.update(lift.leftLift.currentPosition.toDouble(), targetAccel))
+        lastVel = liftController.PROFILED_PID.setpoint.velocity
+        lastTime = time.seconds()
     }
 
     override fun isFinished(): Boolean {
         //End if the lift position is within the tolerance
-        return false
+        return liftController.PROFILED_PID.atGoal()
     }
 
     override fun end(interrupted: Boolean) {
+        if(goal>0){
+            lift.setPower(PositionPIDFController.MOTOR_FF.kg)
+        }
+        else{
+            lift.setPower(0.0)
+        }
     }
 }

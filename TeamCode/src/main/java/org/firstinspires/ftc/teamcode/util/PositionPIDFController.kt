@@ -5,9 +5,11 @@ import com.arcrobotics.ftclib.controller.PIDController
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController
 import com.arcrobotics.ftclib.trajectory.TrapezoidProfile
+import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.subsystems.Lift
 
 @Config
-class PositionPIDFController() {
+class PositionPIDFController(var lift: Lift) {
     companion object {
         @JvmField var MOTOR_PID = PIDController(0.0, 0.0, 0.0)
         @JvmField var MOTOR_FF = ElevatorFeedforward(0.0, 0.0, 0.0, 0.0)
@@ -20,18 +22,14 @@ class PositionPIDFController() {
             field = value
             PROFILED_PID.setGoal(value)
         }
+        get() = PROFILED_PID.setpoint.velocity
+
     var targetVelo = 0.0
-    init {
-        MOTOR_PID.reset()
-    }
+        get() = PROFILED_PID.setpoint.velocity
 
-    fun update(measuredPosition: Double, measuredVelocity: Double): Double {
-        val correction = MOTOR_PID.calculate(measuredPosition)
-        val feedforward = MOTOR_FF.calculate(targetPos, targetVelo)
+    fun update(measuredPosition: Double, targetAccel: Double): Double {
+        val correction = PROFILED_PID.calculate(measuredPosition)
+        val feedforward = MOTOR_FF.calculate(PROFILED_PID.setpoint.velocity, targetAccel)
         return correction+feedforward
-    }
-
-    fun reset() {
-        MOTOR_PID.reset()
     }
 }

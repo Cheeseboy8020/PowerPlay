@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.VoltageSensor
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 class Lift(
@@ -21,6 +22,7 @@ class Lift(
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
     val rightLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "rightLift")
+    var batteryVoltageSensor: VoltageSensor = hardwareMap.voltageSensor.iterator().next()
 
 
     enum class Positions(val targetPosition: Int) {
@@ -50,5 +52,10 @@ class Lift(
         //this.leftLift.direction = DcMotorSimple.Direction.REVERSE
         this.leftLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         this.rightLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+    }
+
+    fun setPower(power: Double){
+        this.leftLift.power = power*(12/batteryVoltageSensor.voltage)
+        this.rightLift.power = power*(12/batteryVoltageSensor.voltage)
     }
 }
