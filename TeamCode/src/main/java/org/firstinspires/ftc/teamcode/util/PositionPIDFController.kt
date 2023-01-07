@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.controller.PIDController
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController
 import com.arcrobotics.ftclib.trajectory.TrapezoidProfile
-import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 
 @Config

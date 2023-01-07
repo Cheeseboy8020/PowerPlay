@@ -30,7 +30,6 @@ class LinkedMotorTuner : LinearOpMode() {
         var posController = PositionPIDFController(lift)
         val tuningController = PosTuningController()
         var lastTargetVelo = 0.0
-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         telemetry = MultipleTelemetry(telemetry, dashboard.telemetry)
         telemetry.addLine("Ready!")
         telemetry.update()
@@ -49,7 +48,7 @@ class LinkedMotorTuner : LinearOpMode() {
             val motorPos = lift.leftLift.currentPosition
             val motorVelo = lift.leftLift.velocity
             val power: Double = posController.update(lift.leftLift.currentPosition.toDouble(), targetAccel)
-            lift.setPower(power, batteryVoltageSensor.voltage)
+            lift.setPower(power)
             telemetry.addData("position", motorPos)
             telemetry.addData("velocity", motorVelo)
             telemetry.addData("error", targetPos - motorPos)
