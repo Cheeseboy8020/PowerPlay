@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.commands
 
 import com.acmerobotics.dashboard.config.Config
-import com.arcrobotics.ftclib.command.Command
 import com.arcrobotics.ftclib.command.CommandBase
-import com.arcrobotics.ftclib.trajectory.TrapezoidProfile
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.util.PositionPIDFController
-import kotlin.math.abs
 
 @Config
 class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){

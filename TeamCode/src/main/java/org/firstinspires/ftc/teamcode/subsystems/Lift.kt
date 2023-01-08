@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
 import com.arcrobotics.ftclib.command.SubsystemBase
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.HardwareMap
-import com.qualcomm.robotcore.hardware.VoltageSensor
+import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 class Lift(
@@ -13,12 +10,12 @@ class Lift(
     opModeType: OpModeType
 ) : SubsystemBase() {
 
-    companion object{
-        @JvmStatic fun rpmToTicksPerSecond(rpm: Double): Double {
-            return rpm * 28*(68.0/13)*(84.0/29)*(84.0/29)/60
+    companion object {
+        @JvmStatic
+        fun rpmToTicksPerSecond(rpm: Double): Double {
+            return rpm * 28 * (68.0 / 13) * (84.0 / 29) * (84.0 / 29) / 60
         }
     }
-
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
     val rightLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "rightLift")
@@ -49,13 +46,13 @@ class Lift(
                 this.rightLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
         }
-        //this.leftLift.direction = DcMotorSimple.Direction.REVERSE
+        this.leftLift.direction = DcMotorSimple.Direction.REVERSE
         this.leftLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         this.rightLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }
 
     fun setPower(power: Double){
-        this.leftLift.power = power*(12/batteryVoltageSensor.voltage)
+        this.leftLift.power = power*(12/batteryVoltageSensor.voltage) //TODO: Fix this
         this.rightLift.power = power*(12/batteryVoltageSensor.voltage)
     }
 }
