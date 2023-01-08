@@ -52,7 +52,7 @@ class Lift(
     }
 
     fun setPower(power: Double){
-        this.leftLift.power = power*(12/batteryVoltageSensor.voltage) //TODO: Fix this
-        this.rightLift.power = power*(12/batteryVoltageSensor.voltage)
+        this.leftLift.power = power
+        this.rightLift.power = power
     }
 }

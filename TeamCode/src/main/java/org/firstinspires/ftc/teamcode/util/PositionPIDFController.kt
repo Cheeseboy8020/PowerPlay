@@ -28,7 +28,7 @@ class PositionPIDFController(var lift: Lift) {
 
     fun update(measuredPosition: Double, targetAccel: Double): Double {
         val correction = PROFILED_PID.calculate(measuredPosition)
-        val feedforward = MOTOR_FF.calculate(PROFILED_PID.setpoint.velocity, targetAccel)
+        val feedforward = MOTOR_FF.calculate(PROFILED_PID.setpoint.velocity, targetAccel) * (12/lift.batteryVoltageSensor.voltage)
         return correction+feedforward
     }
 }
