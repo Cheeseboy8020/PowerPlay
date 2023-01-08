@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.util.PositionPIDFController
 
 @Config
 @TeleOp
-class LinkedMotorTuner : LinearOpMode() {
+class PosLiftTuner : LinearOpMode() {
     private val dashboard = FtcDashboard.getInstance()
     private val veloTimer = ElapsedTime()
     lateinit var lift: Lift
