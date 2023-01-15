@@ -26,9 +26,9 @@ fun main() {
                 .lineToLinearHeading(Pose2d(-36.0, 24.0, Math.toRadians(270.0)))
                 .lineToLinearHeading(Pose2d(-45.3, 5.3, Math.toRadians(166.0)))
 
-                //.lineToLinearHeading(Pose2d(-60.0, 16.0, Math.toRadians(90.0))) // loc1
+                .lineToLinearHeading(Pose2d(-60.0, 16.0, Math.toRadians(90.0))) // loc1
                 //.lineToLinearHeading(Pose2d(-36.0, 16.0, Math.toRadians(90.0))) // loc2
-                .lineToLinearHeading(Pose2d(-12.0, 16.0, Math.toRadians(90.0))) // loc3
+//                .lineToLinearHeading(Pose2d(-12.0, 16.0, Math.toRadians(90.0))) // loc3
                 .build()
         }
 

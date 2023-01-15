@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.Intake
 import kotlin.math.abs
 
-class RetractIntake(private var intake: Intake, private var driveVec: Vector2d, private var goalVec: Vector2d) : CommandBase() {
+class RetractIntake(private var intake: Intake) : CommandBase() {
     val time = ElapsedTime()
     private var originPos = 0.0
     init {

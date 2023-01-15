@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.util.PositionPIDFController
 
 @Config
-class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){
+class ExtendLift(val lift: Lift, val goal: Lift.Positions): CommandBase(){
 
     var liftController: PositionPIDFController = PositionPIDFController(lift)
     val time = ElapsedTime()
@@ -22,7 +22,7 @@ class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){
         //once
         time.reset()
         liftController.PROFILED_PID.reset(lift.leftLift.currentPosition.toDouble(), lift.leftLift.velocity)
-        liftController.targetPos = goal
+        liftController.targetPos = goal.targetPosition.toDouble()
     }
 
     //Run repeatedly while the command is active
@@ -39,7 +39,7 @@ class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){
     }
 
     override fun end(interrupted: Boolean) {
-        if(goal>0){
+        if(goal.targetPosition>0){
             lift.setPower(PositionPIDFController.kg)
         }
         else{
