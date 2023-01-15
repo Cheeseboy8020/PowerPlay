@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -24,16 +25,21 @@ public class StrafeTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
+        Intake intake = new Intake(hardwareMap, telemetry);
+        intake.retract();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        T265Localizer.slamera.setOdometryInfo((float) T265Localizer.cameraRobotOffset.getX(), (float) T265Localizer.cameraRobotOffset.getY(), (float) T265Localizer.cameraRobotOffset.getHeading(), 0.0);
-        ((T265Localizer) drive.getLocalizer()).setEnableMSE(false);
+        /*T265Localizer.slamera.setOdometryInfo((float) T265Localizer.cameraRobotOffset.getX(), (float) T265Localizer.cameraRobotOffset.getY(), (float) T265Localizer.cameraRobotOffset.getHeading(), 0.0);
+        ((T265Localizer) drive.getLocalizer()).setEnableMSE(false);*/
 
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
                 .strafeRight(DISTANCE)
                 .build();
-
+        /*T265Localizer loc = (T265Localizer) drive.getLocalizer();
+        while(!isStarted()){
+            telemetry.addData("Confidence", loc.getPoseConfidence());
+            telemetry.update();
+        }*/
         waitForStart();
 
         drive.followTrajectory(trajectory);

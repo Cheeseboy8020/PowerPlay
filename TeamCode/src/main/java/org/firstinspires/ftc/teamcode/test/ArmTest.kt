@@ -3,20 +3,29 @@ package org.firstinspires.ftc.teamcode.test
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.subsystems.Intake
+import org.firstinspires.ftc.teamcode.subsystems.Lift
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @TeleOp
 //@Disabled
 class ArmTest: LinearOpMode() {
-    lateinit var servo: Servo
+    lateinit var lift: Lift
     override fun runOpMode() {
-        servo = hardwareMap.get(Servo::class.java, "intakeArm")
+        lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
         waitForStart()
         while(opModeIsActive()) {
             if(gamepad1.right_bumper){
-                servo.position=0.32//reduce to go down
+                lift.close()
             }
             if(gamepad1.left_bumper){
-                servo.position = 0.41 //reduce to go up
+                lift.open()
+            }
+            if(gamepad1.y){
+                lift.armOut()
+            }
+            if(gamepad1.a){
+                lift.armIn()
             }
         }
     }

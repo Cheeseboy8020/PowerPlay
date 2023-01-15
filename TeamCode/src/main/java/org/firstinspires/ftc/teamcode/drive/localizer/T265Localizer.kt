@@ -126,7 +126,8 @@ class T265Localizer(
     /**
      * Current robot pose velocity
      */
-    override val poseVelocity: Pose2d? = null
+    override val poseVelocity: Pose2d?
+    get() = lastUpdate.velocity
 
     /**
      * Completes a single localization update.
@@ -144,12 +145,18 @@ class T265Localizer(
                     odometryCovariance += ((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
                             (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
                             (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
-                            3
+                            300000
+                    if (odometryCovariance >= 0.9){
+                        odometryCovariance = 0.9
+                    }
                 } else {
-                    odometryCovariance -= ((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
+                    odometryCovariance -= (((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
                             (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
                             (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
-                            3
+                            3)/300000
+                    if (odometryCovariance <= 0.02){
+                        odometryCovariance = 0.02
+                    }
                 }
             }
         }
@@ -194,7 +201,7 @@ class T265Localizer(
     }
 
     companion object {
-        @JvmField var cameraRobotOffset = Pose2d(0.0, 0.0, Math.toRadians(0.0))
+        @JvmField var cameraRobotOffset = Pose2d(-7.5, 0.0, Math.toRadians(0.0))
         const val mToIn = 100.0/2.54
         const val inToM = 2.54/100.0
 
@@ -218,6 +225,7 @@ class T265Localizer(
             lastUpdate = AmericanCameraUpdate(update, cameraRobotOffset.heading)
         }
     }
+
 
     private fun logPose(pose: Pose2d) {
         Log.d(tag, "${pose.x}, ${pose.y}, ${pose.heading}")

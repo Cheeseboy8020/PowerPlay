@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -46,6 +47,11 @@ public class BackAndForth extends LinearOpMode {
                 .build();
 
         waitForStart();
+        T265Localizer loc = (T265Localizer) drive.getLocalizer();
+        while(!isStarted()){
+            telemetry.addData("Confidence", loc.getPoseConfidence());
+            telemetry.update();
+        }
 
         while (opModeIsActive() && !isStopRequested()) {
             drive.followTrajectory(trajectoryForward);

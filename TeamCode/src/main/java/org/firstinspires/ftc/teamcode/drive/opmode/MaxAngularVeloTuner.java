@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 import java.util.Objects;
 
@@ -35,6 +36,8 @@ public class MaxAngularVeloTuner extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Intake intake = new Intake(hardwareMap, telemetry);
+        intake.retract();
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -45,7 +48,11 @@ public class MaxAngularVeloTuner extends LinearOpMode {
         telemetry.addLine("");
         telemetry.addLine("Press start when ready.");
         telemetry.update();
-
+        T265Localizer loc = (T265Localizer) drive.getLocalizer();
+        while(!isStarted()){
+            telemetry.addData("Confidence", loc.getPoseConfidence());
+            telemetry.update();
+        }
         waitForStart();
 
         telemetry.clearAll();

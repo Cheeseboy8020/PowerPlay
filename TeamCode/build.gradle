@@ -22,7 +22,7 @@ android {
 
 repositories{
     maven { url 'https://jitpack.io' }
-    //maven { url = "https://maven.0x778.tk" }
+    maven { url = "https://maven.0x778.tk" }
 }
 
 
@@ -31,9 +31,11 @@ dependencies {
     //implementation project(path: ':AutoPIDTuner')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
-    //implementation 'com.intel.realsense:librealsense:2.41.1-ftc265@aar'
+    implementation 'com.intel.realsense:librealsense:2.41.1-ftc265@aar'
 
-    implementation 'com.github.Sparib:ftc265:-SNAPSHOT'
+    implementation files('lib/lib-debug.aar')
+
+    //implementation 'com.github.Sparib:ftc265:-SNAPSHOT'
 
     implementation 'org.apache.commons:commons-math3:3.6.1'
 

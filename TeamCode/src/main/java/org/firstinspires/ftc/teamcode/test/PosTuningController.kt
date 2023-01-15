@@ -81,9 +81,9 @@ class PosTuningController {
     }
 
     companion object {
-        @JvmField var MOTOR_MAX_POS = 3400.0 //TODO: Figure this out by running the motors to the top of the lift
-        @JvmField  var TESTING_MAX_POS = 0.9 * MOTOR_MAX_POS
-        @JvmField var TESTING_MIN_POS = 0.3 * MOTOR_MAX_POS
+        @JvmField var MOTOR_MAX_POS = 1330 //TODO: Figure this out by running the motors to the top of the lift
+        @JvmField  var TESTING_MAX_POS = 0.8 * MOTOR_MAX_POS
+        @JvmField var TESTING_MIN_POS = 200.0
 
         // These are prefixed with "STATE1", "STATE2", etc. because Dashboard displays variables in
         // alphabetical order. Thus, we preserve the actual order of the process

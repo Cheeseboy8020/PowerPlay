@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -26,13 +27,16 @@ public class StraightTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
                 .forward(DISTANCE)
                 .build();
-
+        T265Localizer loc = (T265Localizer) drive.getLocalizer();
+        while(!isStarted()){
+            telemetry.addData("Confidence", loc.getPoseConfidence());
+            telemetry.update();
+        }
         waitForStart();
 
         drive.followTrajectory(trajectory);
@@ -43,7 +47,7 @@ public class StraightTest extends LinearOpMode {
         telemetry.addData("finalHeading", poseEstimate.getHeading());
         telemetry.update();
 
-        while (!isStopRequested() && opModeIsActive()) ;
+        while (!isStopRequested() && opModeIsActive());
 
         if(isStopRequested()){
             T265Localizer.slamera.stop();

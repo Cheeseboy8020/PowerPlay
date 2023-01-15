@@ -40,7 +40,7 @@ class ExtendLift(val lift: Lift, val goal: Double): CommandBase(){
 
     override fun end(interrupted: Boolean) {
         if(goal>0){
-            lift.setPower(PositionPIDFController.MOTOR_FF.kg)
+            lift.setPower(PositionPIDFController.kg)
         }
         else{
             lift.setPower(0.0)

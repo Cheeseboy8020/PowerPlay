@@ -22,7 +22,7 @@ class LiftTest: LinearOpMode() {
                 gamepad1.right_trigger.toDouble(),
                 Gamepad.RUMBLE_DURATION_CONTINUOUS
             )
-            telemetry.addData("lift", lift.currentPosition)
+            telemetry.addData("lift", lift.leftLift.currentPosition)
             telemetry.update()
         }
     }

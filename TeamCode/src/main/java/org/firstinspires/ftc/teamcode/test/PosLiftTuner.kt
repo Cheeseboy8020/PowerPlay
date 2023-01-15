@@ -19,11 +19,11 @@ class PosLiftTuner : LinearOpMode() {
     private val dashboard = FtcDashboard.getInstance()
     private val veloTimer = ElapsedTime()
     lateinit var lift: Lift
-    lateinit var batteryVoltageSensor: VoltageSensor
 
     @Throws(InterruptedException::class)
     override fun runOpMode() {
         lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
+        lift.close()
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO
         }
@@ -39,11 +39,12 @@ class PosLiftTuner : LinearOpMode() {
         tuningController.start()
         veloTimer.reset()
         while (!isStopRequested && opModeIsActive()) {
-            val targetPos: Double = tuningController.update()
+            posController.updateCoeffs()
             val targetAccel = (posController.targetVelo - lastTargetVelo) / veloTimer.seconds()
+            posController.targetPos = tuningController.update()
             veloTimer.reset()
             lastTargetVelo = posController.targetVelo
-            telemetry.addData("targetPosition", targetPos)
+            telemetry.addData("targetPosition", posController.targetPos)
             telemetry.addData("targetVelocity", posController.targetVelo)
             val motorPos = lift.leftLift.currentPosition
             val motorVelo = lift.leftLift.velocity
@@ -51,7 +52,8 @@ class PosLiftTuner : LinearOpMode() {
             lift.setPower(power)
             telemetry.addData("position", motorPos)
             telemetry.addData("velocity", motorVelo)
-            telemetry.addData("error", targetPos - motorPos)
+            telemetry.addData("velocityFF", posController.MOTOR_FF.kv)
+            telemetry.addData("error", posController.targetPos - motorPos)
             telemetry.addData(
                 "upperBound",
                 PosTuningController.TESTING_MAX_POS*1.15)
