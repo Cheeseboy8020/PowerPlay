@@ -53,8 +53,8 @@ class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase
 
 
     fun retract(){
-        extLeft.position = LEFT_IN_MIN+0.1
-        extRight.position = RIGHT_IN_MIN-0.1
+        extLeft.position = LEFT_IN_MIN-0.1
+        extRight.position = RIGHT_IN_MIN+0.1
     }
 
     fun retractFull(){

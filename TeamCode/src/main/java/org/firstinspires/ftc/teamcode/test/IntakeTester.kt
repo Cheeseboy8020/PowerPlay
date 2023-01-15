@@ -27,13 +27,13 @@ class IntakeTester: LinearOpMode() {
                 intake.arm.position=0.45//reduce to go down
             }
             if(gamepad1.dpad_down){
-                intake.arm.position = 0.55 //1 stack
+                intake.arm.position = 0.54 //1 stack
             }
             if(gamepad1.a){
-                intake.arm.position = 0.545 //2 stack
+                intake.arm.position = 0.5366//2 stack
             }
             if(gamepad1.x){
-                intake.arm.position = 0.54 //3 stack
+                intake.arm.position = 0.5333 //3 stack
             }
             if (gamepad1.b){
                 intake.arm.position = 0.53 //4 stack
