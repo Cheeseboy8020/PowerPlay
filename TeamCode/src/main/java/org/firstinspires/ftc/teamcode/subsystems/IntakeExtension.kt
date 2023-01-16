@@ -1,34 +1,28 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
-    var leftPinch: Servo
-    var rightPinch: Servo
-    var arm: Servo
+@Config
+class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
     var extLeft: Servo
     var extRight: Servo
-
-    enum class PinchState{
-        OPEN, CLOSED
-    }
-
     companion object{
         //TODO: Figure these out
-        const val LEFT_OUT_MAX = 1.0
-        const val LEFT_IN_MIN = 0.3
-        const val RIGHT_OUT_MAX = 0.0
-        const val RIGHT_IN_MIN = 0.7
+        const val LEFT_OUT_MAX = 0.0
+        @JvmField var LEFT_IN_MIN = 0.4
+        const val RIGHT_OUT_MAX = 1.0
+        @JvmField var RIGHT_IN_MIN = 0.6
         const val MAX_EXT = 27 // Maximum extension in inches
         // of the intake slide
         const val EXT_OFFSET = 0.05856 * 100.0/2.54 + 8.0
 
         // Offset from the center of the robot and arm length
-        const val EXT_SPEED  = 0.7/750.0 // Rate of extension in servo position per millisecond
+        const val EXT_SPEED  = 0.4/750.0 // Rate of extension in servo position per millisecond
         fun calcPos(robotPos: Vector2d, goal: Vector2d): Pair<Double, Double>{
             val dist = robotPos.distTo(goal)-EXT_OFFSET
             if(dist >= MAX_EXT) {
@@ -40,31 +34,24 @@ class Intake(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase
         }
     }
 
-    var state = PinchState.CLOSED
-
     init {
-        leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
-        rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
-        arm = hardwareMap.get(Servo::class.java, "intakeArm")
         extLeft = hardwareMap.get(Servo::class.java, "extLeft")
         extRight = hardwareMap.get(Servo::class.java, "extRight")
+        retractFull()
     }
 
 
     fun retract(){
-        extLeft.position = LEFT_IN_MIN-0.1
-        extRight.position = RIGHT_IN_MIN+0.1
+        extend(Pair(0.3, 0.7))
     }
 
     fun retractFull(){
-        extLeft.position = LEFT_IN_MIN
-        extRight.position = RIGHT_IN_MIN
+        extend(Pair(LEFT_IN_MIN, RIGHT_IN_MIN))
     }
 
     fun extend(pos: Pair<Double, Double>){
-        extLeft.position = pos.second
-        extRight.position = pos.first
+        extLeft.position = pos.first
+        extRight.position = pos.second
     }
-
 
 }

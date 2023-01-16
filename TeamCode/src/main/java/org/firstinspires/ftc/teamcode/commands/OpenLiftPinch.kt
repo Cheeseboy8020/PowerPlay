@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.commands
 import com.arcrobotics.ftclib.command.CommandBase
-import org.firstinspires.ftc.teamcode.subsystems.Lift
+import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 
-class OpenLiftPinch(private var lift: Lift) : CommandBase() {
+class OpenLiftPinch(private var lift: LiftArm) : CommandBase() {
     init {
         addRequirements(lift)
     }

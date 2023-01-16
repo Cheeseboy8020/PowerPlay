@@ -19,18 +19,13 @@ class Lift(
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
     val rightLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "rightLift")
-    var batteryVoltageSensor: VoltageSensor = hardwareMap.voltageSensor.iterator().next()
-
-    val arm = hardwareMap.get(Servo::class.java, "liftArm")
-    val leftPinch = hardwareMap.get(Servo::class.java, "liftLeftPinch")
-    val rightPinch = hardwareMap.get(Servo::class.java, "liftRightPinch")
+    val batteryVoltageSensor: VoltageSensor = hardwareMap.voltageSensor.iterator().next()
 
 
     enum class Positions(val targetPosition: Int) {
-        HIGH(3600),
-        MEDIUM(2600),
-        LOW(1700),
-        GROUND(300),
+        HIGH(1300),
+        MEDIUM(950),
+        LOW(350),
         IN_ROBOT(0)
     }
 
@@ -58,23 +53,5 @@ class Lift(
     fun setPower(power: Double){
         this.leftLift.power = power
         this.rightLift.power = power
-    }
-
-    fun open(){
-        leftPinch.position = 0.3
-        rightPinch.position = 0.7
-
-    }
-    fun close(){
-        leftPinch.position = 0.5
-        rightPinch.position = 0.5
-    }
-
-    fun armIn(){
-        arm.position = 0.5
-    }
-
-    fun armOut(){
-        arm.position=0.6
     }
 }

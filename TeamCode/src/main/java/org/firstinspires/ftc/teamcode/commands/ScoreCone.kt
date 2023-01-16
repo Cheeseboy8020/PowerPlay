@@ -1,43 +1,41 @@
 package org.firstinspires.ftc.teamcode.commands
 
-import com.arcrobotics.ftclib.command.CommandBase
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import org.firstinspires.ftc.teamcode.subsystems.Intake
-import org.firstinspires.ftc.teamcode.subsystems.Lift
-import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
+import org.firstinspires.ftc.teamcode.subsystems.*
 
-class ScoreCone(intake: Intake, lift: Lift, drive: MecanumDrive, stackPos: Int): SequentialCommandGroup() {
-    /*init {
+class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeExtension, lift: Lift,drive: MecanumDrive, stackVec: Vector2d, stackHeight: Int): SequentialCommandGroup() {
+    init {
         addCommands(
             ParallelCommandGroup(
                 SequentialCommandGroup(
                     ParallelCommandGroup(
-                        ExtendIntake(intake, drive.poseEstimate.vec()),
-                        LowerIntakeArm(intake, stackPos),
+                        ExtendIntake(intakeExtension, drive.poseEstimate.vec(), stackVec),
+                        LowerIntakeArm(intakeArm, stackHeight),
                     ),
-                    IntakeGrabCone(intake),
+                    CloseIntakePinch(intakeArm),
                     ParallelCommandGroup(
-                        RetractIntake(intake, drive.poseEstimate.vec()),
-                        RaiseIntakeArm(intake, stackPos)
+                        RetractIntake(intakeExtension),
+                        RaiseIntakeArm(intakeArm)
                     )
                 ),
                 SequentialCommandGroup(
                     ParallelCommandGroup(
-                        ExtendLift(lift, drive.poseEstimate.vec()),
-                        RaiseLiftArm(lift, stackPos),
+                        ExtendLift(lift, Lift.Positions.HIGH),
+                        RaiseLiftArm(liftArm),
                     ),
-                    LiftDropCone(lift),
+                    CloseLiftPinch(liftArm),
                     ParallelCommandGroup(
-                        RetractIntake(intake, drive.poseEstimate.vec()),
-                        LowerLiftArm(lift, stackPos)
+                        RetractIntake(intakeExtension),
+                        LowerLiftArm(liftArm)
                     )
                 )
             ),
             ParallelCommandGroup(
-                DropConeIntake(intake),
-                LiftGrabCone(lift)
+                OpenIntakePinch(intakeArm),
+                CloseLiftPinch(liftArm)
             )
         )
-    }*/
+    }
 }

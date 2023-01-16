@@ -6,9 +6,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.subsystems.Lift
+import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 import org.firstinspires.ftc.teamcode.util.OpModeType
 import org.firstinspires.ftc.teamcode.util.PositionPIDFController
 
@@ -18,11 +17,11 @@ import org.firstinspires.ftc.teamcode.util.PositionPIDFController
 class PosLiftTuner : LinearOpMode() {
     private val dashboard = FtcDashboard.getInstance()
     private val veloTimer = ElapsedTime()
-    lateinit var lift: Lift
+    lateinit var lift: LiftArm
 
     @Throws(InterruptedException::class)
     override fun runOpMode() {
-        lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
+        lift = LiftArm(hardwareMap, LiftArm.Positions.IN_ROBOT, OpModeType.AUTO)
         lift.close()
         for (module in hardwareMap.getAll(LynxModule::class.java)) {
             module.bulkCachingMode = LynxModule.BulkCachingMode.AUTO

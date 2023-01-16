@@ -14,7 +14,7 @@ import com.yt.meepmeep.Positions.P1
 
 fun main() {
     System.setProperty("sun.java2d.opengl", "true")
-    val meepMeep = MeepMeep(800, 120)
+    val meepMeep = MeepMeep(700, 120)
 
     val bot = DefaultBotBuilder(meepMeep)
         .setDimensions(WIDTH, LENGTH)

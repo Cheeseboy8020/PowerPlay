@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /*
  * This is a simple routine to test turning capabilities.

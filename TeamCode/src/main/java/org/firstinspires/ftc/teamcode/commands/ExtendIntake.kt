@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.commands
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.subsystems.Intake
+import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 import kotlin.math.abs
 
-class ExtendIntake(private var intake: Intake, private var driveVec: Vector2d, private var goalVec: Vector2d) : CommandBase() {
+class ExtendIntake(private var intake: IntakeExtension, private var driveVec: Vector2d, private var goalVec: Vector2d) : CommandBase() {
     val time = ElapsedTime()
     private var originPos = 0.0
     init {
@@ -16,12 +16,12 @@ class ExtendIntake(private var intake: Intake, private var driveVec: Vector2d, p
     override fun initialize() {
         originPos = intake.extLeft.position
         time.reset()
-        intake.extend(Intake.calcPos(driveVec, goalVec))
+        intake.extend(IntakeExtension.calcPos(driveVec, goalVec))
     }
 
 
     override fun isFinished(): Boolean {
         return time.milliseconds() >= abs(
-            intake.extLeft.position - originPos) /Intake.EXT_SPEED + 100
+            intake.extLeft.position - originPos) /IntakeExtension.EXT_SPEED + 100
     }
 }

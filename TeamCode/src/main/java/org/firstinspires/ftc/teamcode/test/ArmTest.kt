@@ -2,17 +2,15 @@ package org.firstinspires.ftc.teamcode.test
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.Servo
-import org.firstinspires.ftc.teamcode.subsystems.Intake
-import org.firstinspires.ftc.teamcode.subsystems.Lift
+import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @TeleOp
 //@Disabled
 class ArmTest: LinearOpMode() {
-    lateinit var lift: Lift
+    lateinit var lift: LiftArm
     override fun runOpMode() {
-        lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
+        lift = LiftArm(hardwareMap, LiftArm.Positions.IN_ROBOT, OpModeType.AUTO)
         waitForStart()
         while(opModeIsActive()) {
             if(gamepad1.right_bumper){

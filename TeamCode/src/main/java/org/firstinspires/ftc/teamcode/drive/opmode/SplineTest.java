@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /*
  * This is an example of a more complex path to really test the tuning.

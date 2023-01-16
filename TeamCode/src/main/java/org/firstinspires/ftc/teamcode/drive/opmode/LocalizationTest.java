@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal

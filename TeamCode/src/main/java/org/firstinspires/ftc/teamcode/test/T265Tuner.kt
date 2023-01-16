@@ -10,11 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.spartronics4915.lib.T265Camera.CameraUpdate
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer
-import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.cameraRobotOffset
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.slamera
 import org.firstinspires.ftc.teamcode.drive.localizer.toFtcLib
 import org.firstinspires.ftc.teamcode.drive.localizer.toRoadRunner
-import org.firstinspires.ftc.teamcode.subsystems.Intake
+import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 
 
 /*
@@ -33,7 +32,7 @@ class T265Tuner : LinearOpMode() {
 
     override fun runOpMode() {
         val drive = SampleMecanumDrive(hardwareMap)
-        val intake = Intake(hardwareMap, telemetry)
+        val intake = IntakeExtension(hardwareMap, telemetry)
         val loc = drive.localizer as T265Localizer
         loc.enableMSE = false
         if (isStopRequested) {

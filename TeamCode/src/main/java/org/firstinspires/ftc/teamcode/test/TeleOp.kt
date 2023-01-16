@@ -21,8 +21,8 @@ class TeleOp: CommandOpMode() {
         val gamepad2 = GamepadEx(gamepad2)
 
 
-        val lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.TELEOP)
-        val intake = Intake(hardwareMap, telemetry)
+        val lift = LiftArm(hardwareMap, LiftArm.Positions.IN_ROBOT, OpModeType.TELEOP)
+        val intake = IntakeExtension(hardwareMap, telemetry)
         val drive = MecanumDrive(hardwareMap)
         Log.w("TeleOp", "Initialized Lift")
 

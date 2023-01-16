@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -25,7 +25,7 @@ public class StrafeTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        Intake intake = new Intake(hardwareMap, telemetry);
+        IntakeExtension intake = new IntakeExtension(hardwareMap, telemetry);
         intake.retract();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         /*T265Localizer.slamera.setOdometryInfo((float) T265Localizer.cameraRobotOffset.getX(), (float) T265Localizer.cameraRobotOffset.getY(), (float) T265Localizer.cameraRobotOffset.getHeading(), 0.0);

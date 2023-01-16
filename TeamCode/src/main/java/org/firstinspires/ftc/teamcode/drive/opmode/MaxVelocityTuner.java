@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension;
 
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ public class MaxVelocityTuner extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Intake intake = new Intake(hardwareMap, telemetry);
+        IntakeExtension intake = new IntakeExtension(hardwareMap, telemetry);
         intake.retract();
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
