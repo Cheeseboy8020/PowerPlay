@@ -6,9 +6,11 @@ import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Config
-class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
+class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: OpModeType
+) : SubsystemBase() {
     var leftPinch: Servo
     var rightPinch: Servo
     var arm: Servo
@@ -23,8 +25,10 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemB
         leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
         rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
         arm = hardwareMap.get(Servo::class.java, "intakeArm")
-        open()
-        armIn()
+        if (opModeType == OpModeType.AUTO) {
+            open()
+            armIn()
+        }
     }
 
     fun open(){

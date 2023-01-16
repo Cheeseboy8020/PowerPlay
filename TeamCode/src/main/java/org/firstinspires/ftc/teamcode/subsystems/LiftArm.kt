@@ -13,8 +13,10 @@ class LiftArm(
     val leftPinch = hardwareMap.get(Servo::class.java, "liftLeftPinch")
     val rightPinch = hardwareMap.get(Servo::class.java, "liftRightPinch")
     init {
-        close()
-        armIn()
+        if(opModeType == OpModeType.AUTO) {
+            close()
+            armIn()
+        }
     }
 
     fun open(){
