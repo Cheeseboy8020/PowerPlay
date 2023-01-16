@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 import org.firstinspires.ftc.teamcode.util.PositionPIDFController
+import kotlin.math.abs
 
 @Config
 class ExtendLift(val lift: Lift, val goal: Lift.Positions): CommandBase(){
@@ -36,7 +37,7 @@ class ExtendLift(val lift: Lift, val goal: Lift.Positions): CommandBase(){
 
     override fun isFinished(): Boolean {
         //End if the lift position is within the tolerance
-        return liftController.PROFILED_PID.atGoal()
+        return abs(goal.targetPosition - lift.leftLift.currentPosition) < 10
     }
 
     override fun end(interrupted: Boolean) {

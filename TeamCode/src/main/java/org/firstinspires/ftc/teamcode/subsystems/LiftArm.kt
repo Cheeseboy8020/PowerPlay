@@ -12,6 +12,10 @@ class LiftArm(
     val arm = hardwareMap.get(Servo::class.java, "liftArm")
     val leftPinch = hardwareMap.get(Servo::class.java, "liftLeftPinch")
     val rightPinch = hardwareMap.get(Servo::class.java, "liftRightPinch")
+    init {
+        close()
+        armIn()
+    }
 
     fun open(){
         leftPinch.position = 0.4
@@ -19,8 +23,8 @@ class LiftArm(
 
     }
     fun close(){
-        leftPinch.position = 0.45
-        rightPinch.position = 0.55
+        leftPinch.position = 0.5
+        rightPinch.position = 0.5
     }
 
     fun armIn(){

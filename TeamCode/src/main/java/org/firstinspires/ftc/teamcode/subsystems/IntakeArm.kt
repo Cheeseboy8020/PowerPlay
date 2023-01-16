@@ -23,6 +23,8 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemB
         leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
         rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
         arm = hardwareMap.get(Servo::class.java, "intakeArm")
+        open()
+        armIn()
     }
 
     fun open(){
@@ -42,6 +44,9 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemB
             4->arm.position = 0.53 //4 stack
             5->arm.position = 0.52 //5 stack
         }
+    }
+    fun armIn(){
+        arm.position=0.45
     }
 
 }

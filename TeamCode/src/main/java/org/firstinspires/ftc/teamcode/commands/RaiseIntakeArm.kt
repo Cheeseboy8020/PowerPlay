@@ -10,7 +10,7 @@ class RaiseIntakeArm(private var intake: IntakeArm) : CommandBase() {
     }
 
     override fun initialize() {
-        intake.arm.position=0.45//reduce to go down
+        intake.armIn()//reduce to go down
     }
 
     override fun isFinished(): Boolean {

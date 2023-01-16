@@ -12,14 +12,14 @@ class PositionPIDFController(var lift: Lift) {
     companion object {
         @JvmField var kp = 0.03
         @JvmField var ki = 0.0
-        @JvmField var kd = 0.0004
+        @JvmField var kd = 0.0006
         @JvmField var ks = 0.0
-        @JvmField var kg = 0.1
-        @JvmField var kv = 0.00002
-        @JvmField var ka = 0.0002
+        @JvmField var kg = 0.17
+        @JvmField var kv = 0.00005
+        @JvmField var ka = 0.000
     }
 
-    var PROFILED_PID = ProfiledPIDController(kp, ki, kd, TrapezoidProfile.Constraints(5960*28/60.0, 5960*28/60.0))
+    var PROFILED_PID = ProfiledPIDController(kp, ki, kd, TrapezoidProfile.Constraints(2000.0, 500.0))
 
     var targetPos = 0.0
         set(value) {
