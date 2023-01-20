@@ -28,6 +28,7 @@ class TeleOp: CommandOpMode() {
 
         val lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
         val drive = MecanumDrive(hardwareMap)
+        drive.defaultCommand = PerpetualCommand(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
         drive.poseEstimate = pose
         val intake = IntakeExtension(hardwareMap, telemetry)
         val intakeArm = IntakeArm(hardwareMap, telemetry, OpModeType.AUTO)
@@ -74,8 +75,6 @@ class TeleOp: CommandOpMode() {
             .whileActiveContinuous(InstantCommand({lift.setPower((gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/2.0)}, lift))
             .whenInactive(InstantCommand({lift.setPower(0.0)}, lift))
 
-
-        schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
         register(lift, intake, intakeArm, liftArm, drive)
     }
 }

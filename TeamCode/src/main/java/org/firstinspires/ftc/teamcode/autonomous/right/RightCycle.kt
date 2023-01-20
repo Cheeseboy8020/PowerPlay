@@ -69,21 +69,24 @@ class RightCycle: AutoBase() {
         telemetry.addData("heading", Math.toDegrees(drive.poseEstimate.heading))
         telemetry.update()
         telemetry.sendLine("Generated Trajectories...")
+
+        //Decrease y to go towards the tv
+        //Decreasing x goes towards the wall without anything and increasing x to goes to the wall where we work
         val goToCycle = drive.trajectorySequenceBuilder(Positions.START)
-            .lineTo(Positions.START.vec()+Vector2d(6.0, -6.0))
-            .lineToLinearHeading(Pose2d(-38.0, 24.0, Math.toRadians(270.0)))
-            .lineToLinearHeading(Pose2d(-38.0, 5.0, Math.toRadians(346.0)))
+            .lineTo(Positions.START.vec()+Vector2d(6.0, -6.0)) //Initial movement to go between junctions
+            .lineToLinearHeading(Pose2d(-38.0, 24.0, Math.toRadians(270.0))) // Goes to position before cycle position
+            .lineToLinearHeading(Pose2d(-38.0, 5.0, Math.toRadians(346.0))) // Goes to cycle position
             .build()
 
         val goToPark = if(pos== Positions.P3){
             drive.trajectorySequenceBuilder(goToCycle.end())
-                .strafeLeft(12.0)
-                .lineTo(pos.vec())
+                .strafeLeft(12.0) // Strafes left for position 3
+                .lineTo(pos.vec()) // Goes to position 3
                 .build()
         }
         else {
             drive.trajectorySequenceBuilder(goToCycle.end())
-                .lineTo(pos.vec())
+                .lineTo(pos.vec()) // Goes to position 1 & 2
                 .build()
         }
 
