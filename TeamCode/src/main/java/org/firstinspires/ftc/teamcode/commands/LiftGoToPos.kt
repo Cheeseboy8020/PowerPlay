@@ -46,10 +46,11 @@ class LiftGoToPos(val lift: Lift, val pos: Lift.Positions, val tolerance: Int = 
 
     override fun isFinished(): Boolean {
         //End if the lift position is within the tolerance
-        return abs(lift.leftLift.currentPosition - pos.targetPosition) < tolerance
+        return (abs(lift.leftLift.currentPosition - pos.targetPosition) < tolerance) or (time.milliseconds()>5000)
     }
 
     override fun end(interrupted: Boolean) {
+        lift.currentPosition = pos
         when(pos) {
             Lift.Positions.IN_ROBOT->lift.setPower(0.0)
 

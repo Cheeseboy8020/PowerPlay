@@ -13,13 +13,15 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     var extRight: Servo
     companion object{
         //TODO: Figure these out
+        @JvmField var LEFT_IN = 0.32
+        @JvmField var RIGHT_IN = 0.68
         const val LEFT_OUT_MAX = 0.0
         @JvmField var LEFT_IN_MIN = 0.4
         const val RIGHT_OUT_MAX = 1.0
         @JvmField var RIGHT_IN_MIN = 0.6
         const val MAX_EXT = 27 // Maximum extension in inches
         // of the intake slide
-        const val EXT_OFFSET = 0.05856 * 100.0/2.54 + 8.0
+        const val EXT_OFFSET = 0.05856 * 100.0/2.54 + 6.0
 
         // Offset from the center of the robot and arm length
         const val EXT_SPEED  = 0.4/750.0 // Rate of extension in servo position per millisecond
@@ -37,12 +39,11 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     init {
         extLeft = hardwareMap.get(Servo::class.java, "extLeft")
         extRight = hardwareMap.get(Servo::class.java, "extRight")
-        retractFull()
     }
 
 
     fun retract(){
-        extend(Pair(0.3, 0.7))
+        extend(Pair(LEFT_IN, RIGHT_IN))
     }
 
     fun retractFull(){

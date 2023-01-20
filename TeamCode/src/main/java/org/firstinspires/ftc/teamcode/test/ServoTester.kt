@@ -16,7 +16,8 @@ class ServoTester: LinearOpMode() {
     override fun runOpMode() {
         intake = IntakeExtension(hardwareMap, telemetry)
         intakeArm = IntakeArm(hardwareMap, telemetry, OpModeType.AUTO)
-        lift = LiftArm(hardwareMap, OpModeType.AUTO)
+
+        lift = LiftArm(hardwareMap, OpModeType.TELEOP)
         waitForStart()
         while(opModeIsActive()) {
             if(gamepad1.right_bumper){

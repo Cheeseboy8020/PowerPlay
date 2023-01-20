@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
+import com.acmerobotics.dashboard.config.Config
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
+@Config
 class Lift(
     hardwareMap: HardwareMap,
     startingPosition: Positions,
@@ -15,6 +17,8 @@ class Lift(
         fun rpmToTicksPerSecond(rpm: Double): Double {
             return rpm * 28 * (68.0 / 13) * (84.0 / 29) * (84.0 / 29) / 60
         }
+        @JvmField var HIGH = 1300
+        @JvmField var HIGH_AUTO = 775
     }
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
@@ -23,10 +27,11 @@ class Lift(
 
 
     enum class Positions(val targetPosition: Int) {
-        HIGH(1300),
+        HIGH(Lift.HIGH),
+        HIGH_AUTO(Lift.HIGH_AUTO),
         MEDIUM(950),
         LOW(350),
-        IN_ROBOT(0)
+        IN_ROBOT(20)
     }
 
     var currentPosition = Positions.IN_ROBOT

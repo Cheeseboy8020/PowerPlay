@@ -19,6 +19,14 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
         OPEN, CLOSED
     }
 
+    companion object{
+        @JvmField var STACK_1_POS = 0.535
+        @JvmField var STACK_2_POS =  0.53//2 stack
+        @JvmField var STACK_3_POS = 0.5225 //3 stack
+        @JvmField var STACK_4_POS = 0.5175 //4 stack
+        @JvmField var STACK_5_POS = 0.5125 //5 stack
+        @JvmField var ARM_IN = 0.43
+    }
     var state = PinchState.CLOSED
 
     init {
@@ -32,25 +40,26 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
     }
 
     fun open(){
-        leftPinch.position = 0.3
-        rightPinch.position=0.7
+        leftPinch.position = 0.4
+        rightPinch.position=0.6
     }
 
     fun close(){
         leftPinch.position=0.5
         rightPinch.position=0.5
+
     }
     fun armOut(stackHeight: Int){
         when(stackHeight) {
-            1->arm.position = 0.54 //1 stack
-            2->arm.position = 0.5366//2 stack
-            3->arm.position = 0.5333 //3 stack
-            4->arm.position = 0.53 //4 stack
-            5->arm.position = 0.52 //5 stack
+            1->arm.position = STACK_1_POS //1 stack
+            2->arm.position = STACK_2_POS //2 stack
+            3->arm.position = STACK_3_POS //3 stack
+            4->arm.position = STACK_4_POS //4 stack
+            5->arm.position = STACK_5_POS //5 stack
         }
     }
     fun armIn(){
-        arm.position=0.45
+        arm.position= ARM_IN
     }
 
 }

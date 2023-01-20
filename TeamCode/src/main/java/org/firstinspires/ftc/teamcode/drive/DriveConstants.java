@@ -87,7 +87,7 @@
          * You are free to raise this on your own if you would like. It is best determined through experimentation.
 
          */
-        public static double MAX_VEL = 39.2;
+        public static double MAX_VEL = 43.0;
         public static double MAX_ACCEL = ((MAX_RPM / 60) * GEAR_RATIO * WHEEL_RADIUS * 2 * Math.PI) * 0.85;
         public static double MAX_ANG_VEL = Math.toRadians(191);
         public static double MAX_ANG_ACCEL = MAX_VEL / TRACK_WIDTH;
