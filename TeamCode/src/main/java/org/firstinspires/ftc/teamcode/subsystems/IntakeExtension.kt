@@ -13,12 +13,12 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     var extRight: Servo
     companion object{
         //TODO: Figure these out
-        @JvmField var LEFT_IN = 0.32
-        @JvmField var RIGHT_IN = 0.68
-        const val LEFT_OUT_MAX = 0.0
-        @JvmField var LEFT_IN_MIN = 0.4
-        const val RIGHT_OUT_MAX = 1.0
-        @JvmField var RIGHT_IN_MIN = 0.6
+        @JvmField var LEFT_IN = 0.42
+        @JvmField var RIGHT_IN = 0.58
+        const val LEFT_OUT_MAX = 0.01
+        @JvmField var LEFT_IN_MIN = 0.42
+        const val RIGHT_OUT_MAX = 0.99
+        @JvmField var RIGHT_IN_MIN = 0.58
         const val MAX_EXT = 27 // Maximum extension in inches
         // of the intake slide
         const val EXT_OFFSET = 0.05856 * 100.0/2.54 + 6.0
@@ -38,12 +38,17 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
 
     init {
         extLeft = hardwareMap.get(Servo::class.java, "extLeft")
+        extLeft.direction = Servo.Direction.FORWARD
         extRight = hardwareMap.get(Servo::class.java, "extRight")
     }
 
 
     fun retract(){
-        extend(Pair(LEFT_IN, RIGHT_IN))
+        extLeft.direction = Servo.Direction.FORWARD
+        extLeft.position = LEFT_IN
+        extRight.position = RIGHT_IN
+        telemetry.addData("pos", extLeft.position)
+        telemetry.update()
     }
 
     fun retractFull(){
@@ -51,8 +56,11 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     }
 
     fun extend(pos: Pair<Double, Double>){
+        extLeft.direction = Servo.Direction.FORWARD
         extLeft.position = pos.first
         extRight.position = pos.second
+        telemetry.addData("pos", extLeft.position)
+        telemetry.update()
     }
 
 }

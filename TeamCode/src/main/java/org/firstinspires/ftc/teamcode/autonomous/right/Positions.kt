@@ -10,7 +10,7 @@ object Positions {
     //l = 17.75
     @JvmField val START = Pose2d(-40.0, 62.0, Math.toRadians(270.0))
     @JvmField val DELIVER = Pose2d(-39.0, 14.0, Math.toRadians(320.0))
-    @JvmField val P3 = Pose2d(-59.0, 16.0, Math.toRadians(90.0))
+    @JvmField val P3 = Pose2d(-60.0, 16.0, Math.toRadians(90.0))
     @JvmField val P2 = Pose2d(-37.0, 16.0, Math.toRadians(90.0))
     @JvmField val P1 = Pose2d(-14.0, 16.0, Math.toRadians(90.0))
 

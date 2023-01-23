@@ -23,8 +23,8 @@ class LiftArm(
     }
     init {
         if(opModeType == OpModeType.AUTO) {
-            close()
             armIn()
+            close()
         }
     }
 

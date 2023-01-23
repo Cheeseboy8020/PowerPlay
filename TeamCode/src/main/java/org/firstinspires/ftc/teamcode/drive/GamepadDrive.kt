@@ -13,7 +13,7 @@ class GamepadDrive(
     private val leftX: DoubleSupplier
     private val rightX: DoubleSupplier
     override fun execute() {
-        drive.drive(-leftY.asDouble, leftX.asDouble, rightX.asDouble)
+        drive.drive(leftY.asDouble, leftX.asDouble, rightX.asDouble)
     }
 
     init {

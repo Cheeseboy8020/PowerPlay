@@ -86,7 +86,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             slamera.stop();
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.25, 0.25, Math.toRadians(2.5)), 1.0);
+                new Pose2d(0.25, 0.25, Math.toRadians(2.5)), 0.75);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -148,7 +148,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        //reverse any motors using DcMotor.setDirection()
+        //reverse any motors using DcMotor.sPose2d(-38.0, 5.0, Math.toRadians(346.0))etDirection()
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);

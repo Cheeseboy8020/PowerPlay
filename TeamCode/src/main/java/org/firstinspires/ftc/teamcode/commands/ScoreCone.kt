@@ -27,8 +27,9 @@ class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeE
                 LiftGoToPos(lift, liftHeight),
                 RaiseLiftArm(liftArm, armPos)
             ),
+            WaitCommand(100),
             OpenLiftPinch(liftArm),
-            WaitCommand(50),
+            WaitCommand(150),
             CloseIntakePinch(intakeArm),
             ParallelCommandGroup(
                 RaiseIntakeArm(intakeArm),

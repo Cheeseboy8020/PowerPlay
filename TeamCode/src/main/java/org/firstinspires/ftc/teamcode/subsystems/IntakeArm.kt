@@ -20,7 +20,7 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
     }
 
     companion object{
-        @JvmField var STACK_1_POS = 0.535
+        @JvmField var STACK_1_POS = 0.5375
         @JvmField var STACK_2_POS =  0.53//2 stack
         @JvmField var STACK_3_POS = 0.5225 //3 stack
         @JvmField var STACK_4_POS = 0.5175 //4 stack
@@ -40,8 +40,8 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
     }
 
     fun open(){
-        leftPinch.position = 0.4
-        rightPinch.position=0.6
+        leftPinch.position = 0.43
+        rightPinch.position=0.57
     }
 
     fun close(){

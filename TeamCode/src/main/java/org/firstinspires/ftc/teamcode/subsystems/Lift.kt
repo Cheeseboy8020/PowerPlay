@@ -18,7 +18,7 @@ class Lift(
             return rpm * 28 * (68.0 / 13) * (84.0 / 29) * (84.0 / 29) / 60
         }
         @JvmField var HIGH = 1300
-        @JvmField var HIGH_AUTO = 775
+        @JvmField var HIGH_AUTO = 1650
     }
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
@@ -29,7 +29,7 @@ class Lift(
     enum class Positions(val targetPosition: Int) {
         HIGH(Lift.HIGH),
         HIGH_AUTO(Lift.HIGH_AUTO),
-        MEDIUM(950),
+        MEDIUM(1250),
         LOW(350),
         IN_ROBOT(20)
     }
@@ -50,7 +50,7 @@ class Lift(
                 this.rightLift.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             }
         }
-        this.leftLift.direction = DcMotorSimple.Direction.REVERSE
+        this.rightLift.direction = DcMotorSimple.Direction.REVERSE
         this.leftLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         this.rightLift.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }

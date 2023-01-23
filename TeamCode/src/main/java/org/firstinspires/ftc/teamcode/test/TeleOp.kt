@@ -28,14 +28,16 @@ class TeleOp: CommandOpMode() {
 
         val lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
         val drive = MecanumDrive(hardwareMap)
-        drive.defaultCommand = PerpetualCommand(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
         drive.poseEstimate = pose
         val intake = IntakeExtension(hardwareMap, telemetry)
+        intake.retractFull()
         val intakeArm = IntakeArm(hardwareMap, telemetry, OpModeType.AUTO)
         val liftArm = LiftArm(hardwareMap, OpModeType.TELEOP)
 
 
-        val scoreCone = ScoreCone(intakeArm, liftArm, intake, lift, 1, 0.29, Lift.Positions.HIGH)
+        val scoreCone = ScoreCone(intakeArm, liftArm, intake, lift, 1, 0.38, Lift.Positions.HIGH)
+        val scoreConeMid = ScoreCone(intakeArm, liftArm, intake, lift, 1, 0.365, Lift.Positions.MEDIUM)
+        val autoPos = AutoPositionBlue(drive, gamepad1)
         Log.w("TeleOp", "Initialized Lift")
         telemetry.sendLine("Initialized Robot")
         //Auto position - Done
@@ -47,8 +49,11 @@ class TeleOp: CommandOpMode() {
         //Intake arm/bring to transfer position
         //Intake Arm out
         //Emergency stop - Done
-        gamepad1.getGamepadButton(GamepadKeys.Button.A)
-            .toggleWhenPressed(AutoPositionBlue(drive))
+        /*gamepad1.getGamepadButton(GamepadKeys.Button.A)
+            .whenPressed(autoPos)
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.Y)
+            .cancelWhenPressed(autoPos)*/
 
 
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
@@ -64,17 +69,24 @@ class TeleOp: CommandOpMode() {
             .whenPressed(LowerLiftArm(liftArm))
         gamepad2.getGamepadButton(GamepadKeys.Button.Y)
             .whenPressed(scoreCone)
+        gamepad2.getGamepadButton(GamepadKeys.Button.B)
+            .whenPressed(scoreConeMid)
         gamepad2.getGamepadButton(GamepadKeys.Button.BACK)
             .cancelWhenPressed(scoreCone)
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-            .whenPressed(RetractIntake(intake))
+            .whenPressed(RaiseIntakeArm(intakeArm))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(LowerIntakeArm(intakeArm, 1))
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
-            .whenPressed(InstantCommand({intake.retractFull() }, intake))
+            .whenPressed(CloseIntakePinch(intakeArm))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+            .whenPressed(OpenIntakePinch(intakeArm))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0 || gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
             .whileActiveContinuous(InstantCommand({lift.setPower((gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)-gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER))/2.0)}, lift))
             .whenInactive(InstantCommand({lift.setPower(0.0)}, lift))
 
+        schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
         register(lift, intake, intakeArm, liftArm, drive)
     }
 }

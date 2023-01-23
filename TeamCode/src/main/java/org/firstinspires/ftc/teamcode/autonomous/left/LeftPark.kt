@@ -1,21 +1,21 @@
 package org.firstinspires.ftc.teamcode.autonomous.left
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.InstantCommand
-import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.autonomous.AutoBase
 import org.firstinspires.ftc.teamcode.autonomous.PoseStorage
-import org.firstinspires.ftc.teamcode.autonomous.right.Positions.DELIVER
+import org.firstinspires.ftc.teamcode.autonomous.left.Positions
 import org.firstinspires.ftc.teamcode.commands.*
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.slamera
 import org.firstinspires.ftc.teamcode.subsystems.*
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
+@Config
 @Autonomous
 class LeftPark: AutoBase() {
     private lateinit var drive: MecanumDrive
@@ -26,6 +26,10 @@ class LeftPark: AutoBase() {
     private lateinit var scanner: SignalScanner
     private lateinit var pos: Pose2d
 
+    companion object{
+        @JvmField var ARM_POS = 0.6
+        @JvmField var EXT_POS = 0.365
+    }
 
     override fun initialize() {
         telemetry.sendLine("Initializing Subsystems...")
@@ -66,43 +70,26 @@ class LeftPark: AutoBase() {
         telemetry.addData("heading", Math.toDegrees(drive.poseEstimate.heading))
         telemetry.update()
         telemetry.sendLine("Generated Trajectories...")
-        val goToCycle = drive.trajectorySequenceBuilder(Positions.START)
-            .lineTo(Positions.START.vec()+Vector2d(5.0, -5.0))
-            .lineToLinearHeading(Pose2d(-36.5, 24.5, Math.toRadians(270.0)))
-            .lineToLinearHeading(DELIVER)
+
+        //Decrease y to go towards the tv
+        //Decreasing x goes towards the wall without anything and increasing x to goes to the wall where we work
+        val goToPark = drive.trajectorySequenceBuilder(Positions.START)
+            .lineTo(Positions.START.vec()+Vector2d(-6.0, -6.0)) //Initial movement
+            .lineTo(Vector2d(35.0, 18.0)) // Goes to cycle position
+            .lineTo(pos.vec())
             .build()
 
-        val back = drive.trajectorySequenceBuilder(goToCycle.end())
-            .back(2.0)
-            //.lineToLinearHeading(Pose2d(-42.0, 8.5, Math.toRadians(346.0)))
-            .build()
-        val goToPark: TrajectorySequence = when(pos){
-            Positions.P1 -> drive.trajectorySequenceBuilder(back.end()).turn(Math.toRadians(-230.0)).lineToLinearHeading(pos).build()
-            else -> drive.trajectorySequenceBuilder(back.end()).lineToLinearHeading(pos).build()
-        }
 
         telemetry.sendLine("Ready To Start...")
         waitForStart()
         telemetry.sendLine("Scheduling Commands...")
         schedule(
             InstantCommand({intake.retractFull()}),
-            InstantCommand({drive.poseEstimate= Positions.START }),
             SequentialCommandGroup(
                 InstantCommand({
                     telemetry.addLine("Program Started!")
                     telemetry.update()
                 }),
-                FollowTrajectorySequence(drive, goToCycle),
-                ParallelCommandGroup(
-                    LiftGoToPos(lift, Lift.Positions.HIGH),
-                    RaiseLiftArm(liftArm)
-                ),
-                OpenLiftPinch(liftArm),
-                FollowTrajectorySequence(drive, back),
-                ParallelCommandGroup(
-                    LiftGoToPos(lift, Lift.Positions.IN_ROBOT),
-                    LowerLiftArm(liftArm)
-                ),
                 FollowTrajectorySequence(drive, goToPark),
                 InstantCommand({ PoseStorage.pose = drive.poseEstimate}),
                 InstantCommand({slamera!!.stop()})

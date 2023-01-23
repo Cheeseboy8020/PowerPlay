@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.autonomous.AutoBase
 import org.firstinspires.ftc.teamcode.autonomous.PoseStorage
+import org.firstinspires.ftc.teamcode.autonomous.left.Positions
 import org.firstinspires.ftc.teamcode.commands.*
 import org.firstinspires.ftc.teamcode.cv.SignalScanner
 import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.slamera
@@ -27,7 +28,7 @@ class LeftCycle: AutoBase() {
 
     companion object{
         @JvmField var ARM_POS = 0.6
-        @JvmField var EXT_POS = 0.275
+        @JvmField var EXT_POS = 0.365
     }
 
     override fun initialize() {
@@ -69,21 +70,25 @@ class LeftCycle: AutoBase() {
         telemetry.addData("heading", Math.toDegrees(drive.poseEstimate.heading))
         telemetry.update()
         telemetry.sendLine("Generated Trajectories...")
+
+        //Decrease y to go towards the tv
+        //Decreasing x goes towards the wall without anything and increasing x to goes to the wall where we work
         val goToCycle = drive.trajectorySequenceBuilder(Positions.START)
-            .lineTo(Positions.START.vec()+Vector2d(-6.0, -6.0))
-            .lineToLinearHeading(Pose2d(32.0, 24.0, Math.toRadians(270.0)))
-            .lineToLinearHeading(Pose2d(38.0, 5.5, Math.toRadians(196.0)))
+            .lineTo(Positions.START.vec()+Vector2d(-6.0, -6.0)) //Initial movement to go between junctions
+            .lineToLinearHeading(Pose2d(33.0, 24.0, Math.toRadians(270.0))) // Goes to position before cycle position
+            .lineToLinearHeading(Pose2d(38.0, 10.0, Math.toRadians(197.0)))
+            .lineTo(Vector2d(38.0, 4.0)) // Goes to cycle position
             .build()
 
         val goToPark = if(pos== Positions.P3){
             drive.trajectorySequenceBuilder(goToCycle.end())
-                .strafeRight(12.0)
-                .lineTo(pos.vec())
+                .strafeRight(12.0) // Strafes left for position 3
+                .lineTo(pos.vec()) // Goes to position 3
                 .build()
         }
         else {
             drive.trajectorySequenceBuilder(goToCycle.end())
-                .lineTo(pos.vec())
+                .lineTo(pos.vec()) // Goes to position 1 & 2
                 .build()
         }
 
@@ -99,15 +104,15 @@ class LeftCycle: AutoBase() {
                 }),
                 FollowTrajectorySequence(drive, goToCycle),
                 ScoreCone(intakeArm, liftArm, intake, lift, 5, EXT_POS, Lift.Positions.HIGH_AUTO, ARM_POS),
-                ScoreCone(intakeArm, liftArm, intake, lift, 4, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 3, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 2, EXT_POS +0.008, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 1, EXT_POS +0.007, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreConeLift(liftArm, lift, Lift.Positions.HIGH_AUTO, ARM_POS, 250),
+                ScoreCone(intakeArm, liftArm, intake, lift, 4, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 3, EXT_POS +0.002, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 2, EXT_POS +0.003, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 1, EXT_POS +0.003, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreConeLift(liftArm, lift, Lift.Positions.HIGH_AUTO, ARM_POS, 300),
                 InstantCommand({ PoseStorage.pose = drive.poseEstimate}),
                 FollowTrajectorySequence(drive, goToPark),
                 InstantCommand({slamera!!.stop()})
-        )
+            )
         )
     }
 }

@@ -27,7 +27,7 @@ class RightCycle: AutoBase() {
 
     companion object{
         @JvmField var ARM_POS = 0.6
-        @JvmField var EXT_POS = 0.275
+        @JvmField var EXT_POS = 0.365
     }
 
     override fun initialize() {
@@ -74,11 +74,12 @@ class RightCycle: AutoBase() {
         //Decreasing x goes towards the wall without anything and increasing x to goes to the wall where we work
         val goToCycle = drive.trajectorySequenceBuilder(Positions.START)
             .lineTo(Positions.START.vec()+Vector2d(6.0, -6.0)) //Initial movement to go between junctions
-            .lineToLinearHeading(Pose2d(-38.0, 24.0, Math.toRadians(270.0))) // Goes to position before cycle position
-            .lineToLinearHeading(Pose2d(-38.0, 5.0, Math.toRadians(346.0))) // Goes to cycle position
+            .lineToLinearHeading(Pose2d(-33.0, 24.0, Math.toRadians(270.0))) // Goes to position before cycle position
+            .lineToLinearHeading(Pose2d(-38.0, 10.0, Math.toRadians(355.0)))
+            .lineTo(Vector2d(-38.0, 5.0)) // Goes to cycle position
             .build()
 
-        val goToPark = if(pos== Positions.P3){
+        val goToPark = if(pos== Positions.P1){
             drive.trajectorySequenceBuilder(goToCycle.end())
                 .strafeLeft(12.0) // Strafes left for position 3
                 .lineTo(pos.vec()) // Goes to position 3
@@ -102,13 +103,14 @@ class RightCycle: AutoBase() {
                 }),
                 FollowTrajectorySequence(drive, goToCycle),
                 ScoreCone(intakeArm, liftArm, intake, lift, 5, EXT_POS, Lift.Positions.HIGH_AUTO, ARM_POS),
-                ScoreCone(intakeArm, liftArm, intake, lift, 4, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 3, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 2, EXT_POS +0.008, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreCone(intakeArm, liftArm, intake, lift, 1, EXT_POS +0.007, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 350),
-                ScoreConeLift(liftArm, lift, Lift.Positions.HIGH_AUTO, ARM_POS, 250),
-                InstantCommand({ PoseStorage.pose = drive.poseEstimate}),
+                ScoreCone(intakeArm, liftArm, intake, lift, 4, EXT_POS +0.005, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 3, EXT_POS +0.002, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 2, EXT_POS +0.003, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreCone(intakeArm, liftArm, intake, lift, 1, EXT_POS +0.003, Lift.Positions.HIGH_AUTO, ARM_POS, Pair(0.33, 0.67), 300),
+                ScoreConeLift(liftArm, lift, Lift.Positions.HIGH_AUTO, ARM_POS, 300),
+                InstantCommand({intake.retractFull()}),
                 FollowTrajectorySequence(drive, goToPark),
+                InstantCommand({ PoseStorage.pose = drive.poseEstimate}),
                 InstantCommand({slamera!!.stop()})
         )
         )
