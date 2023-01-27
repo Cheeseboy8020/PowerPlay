@@ -45,7 +45,7 @@ dependencies {
 
     implementation 'com.github.AlphaGo16439:AGDistanceLocalization:v1.0.1'
 
-    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v2.0.1'
+    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v2.0.4'
 
     implementation 'org.openftc:easyopencv:1.5.3'
 

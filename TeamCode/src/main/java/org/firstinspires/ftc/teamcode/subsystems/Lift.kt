@@ -29,7 +29,7 @@ class Lift(
     enum class Positions(val targetPosition: Int) {
         HIGH(Lift.HIGH),
         HIGH_AUTO(Lift.HIGH_AUTO),
-        MEDIUM(1250),
+        MEDIUM(850),
         LOW(350),
         IN_ROBOT(20)
     }
