@@ -52,12 +52,12 @@ class T265Tuner : LinearOpMode() {
             drive.turn(Math.toRadians(360.0))
             if (loc.lastCameraRobotOffset.x != cameraOffX || loc.lastCameraRobotOffset.y != cameraOffY) {
                 val cameraRobotOffsetPose = Pose2d(cameraOffX, cameraOffY, loc.lastCameraRobotOffset.heading).toFtcLib()
-                slamera!!.setOdometryInfo(
+                /*slamera!!.setOdometryInfo(
                     cameraRobotOffsetPose.translation.x.toFloat(),
                     cameraRobotOffsetPose.translation.y.toFloat(),
                     cameraRobotOffsetPose.rotation.radians.toFloat(),
                     1.0
-                    )
+                    )*/
 
                 loc.lastCameraRobotOffset = cameraRobotOffsetPose.toRoadRunner()
 

@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.command.PerpetualCommand
 import com.arcrobotics.ftclib.command.button.Trigger
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
+import com.arcrobotics.ftclib.util.Direction
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.autonomous.AutoBase.Companion.sendLine
 import org.firstinspires.ftc.teamcode.autonomous.PoseStorage.pose
@@ -49,11 +50,20 @@ class TeleOp: CommandOpMode() {
         //Intake arm/bring to transfer position
         //Intake Arm out
         //Emergency stop - Done
-        /*gamepad1.getGamepadButton(GamepadKeys.Button.A)
+        gamepad1.getGamepadButton(GamepadKeys.Button.A)
             .whenPressed(autoPos)
 
         gamepad1.getGamepadButton(GamepadKeys.Button.Y)
-            .cancelWhenPressed(autoPos)*/
+            .cancelWhenPressed(autoPos)
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+            .whenPressed(DpadDrive(drive, Direction.FORWARD))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+            .whenPressed(DpadDrive(drive, Direction.RIGHT))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_LEFT)
+            .whenPressed(DpadDrive(drive, Direction.LEFT))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(DpadDrive(drive, Direction.BACKWARDS))
 
 
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)

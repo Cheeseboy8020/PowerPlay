@@ -161,11 +161,11 @@ class T265Localizer(
             }
         }
 
-        slamera!!.setOdometryInfo(
+        /*slamera!!.setOdometryInfo(
             cameraRobotOffset.toFtcLib().translation.x.toFloat(),
             cameraRobotOffset.toFtcLib().translation.y.toFloat(),
             cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
-            odometryCovariance)
+            odometryCovariance)*/
     }
 
     init {
@@ -193,11 +193,11 @@ class T265Localizer(
         logPose(poseEstimate)
         poseEstimate = Pose2d()
         logPose(poseEstimate)
-        slamera!!.setOdometryInfo(
+        /*slamera!!.setOdometryInfo(
             cameraRobotOffset.toFtcLib().translation.x.toFloat(),
             cameraRobotOffset.toFtcLib().translation.y.toFloat(),
             cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
-            odometryCovariance)
+            odometryCovariance)*/
     }
 
     companion object {

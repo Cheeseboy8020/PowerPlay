@@ -3,14 +3,16 @@ package org.firstinspires.ftc.teamcode.subsystems
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.SubsystemBase
+import com.qualcomm.robotcore.hardware.CRServo
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 @Config
 class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : SubsystemBase() {
-    var extLeft: Servo
-    var extRight: Servo
+    var extLeft: CRServo
+    var extRight: CRServo
     companion object{
         //TODO: Figure these out
         @JvmField var LEFT_IN = 0.42
@@ -37,18 +39,18 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     }
 
     init {
-        extLeft = hardwareMap.get(Servo::class.java, "extLeft")
-        extLeft.direction = Servo.Direction.FORWARD
-        extRight = hardwareMap.get(Servo::class.java, "extRight")
+        extLeft = hardwareMap.get(CRServo::class.java, "extLeft")
+        extRight = hardwareMap.get(CRServo::class.java, "extRight")
+        extRight.direction = DcMotorSimple.Direction.REVERSE
     }
 
 
     fun retract(){
-        extLeft.direction = Servo.Direction.FORWARD
+        /*extLeft.direction = Servo.Direction.FORWARD
         extLeft.position = LEFT_IN
         extRight.position = RIGHT_IN
         telemetry.addData("pos", extLeft.position)
-        telemetry.update()
+        telemetry.update()*/
     }
 
     fun retractFull(){
@@ -56,11 +58,11 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry) : Subs
     }
 
     fun extend(pos: Pair<Double, Double>){
-        extLeft.direction = Servo.Direction.FORWARD
+        /*extLeft.direction = Servo.Direction.FORWARD
         extLeft.position = pos.first
         extRight.position = pos.second
         telemetry.addData("pos", extLeft.position)
-        telemetry.update()
+        telemetry.update()*/
     }
 
 }

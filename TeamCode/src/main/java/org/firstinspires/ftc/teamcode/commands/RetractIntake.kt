@@ -18,14 +18,13 @@ class RetractIntake(private var intake: IntakeExtension, var delay: Int = 0, var
     override fun initialize() {
         time.reset()
         while(time.milliseconds()<delay){}
-        originPos = intake.extLeft.position
+        //originPos = intake.extLeft.position
         time.reset()
         intake.retract()
     }
 
 
     override fun isFinished(): Boolean {
-        return time.milliseconds() >= abs(
-            intake.extLeft.position - originPos) /IntakeExtension.EXT_SPEED + 350
+        return true //time.milliseconds() >= abs(intake.extLeft.position - originPos) /IntakeExtension.EXT_SPEED + 350
     }
 }

@@ -25,14 +25,13 @@ class ExtendIntake(private var intake: IntakeExtension, var extPos: Double) : Co
     }
 
     override fun initialize() {
-        originPos = intake.extLeft.position
+        //originPos = intake.extLeft.position
         time.reset()
         intake.extend(Pair(extPos, (LEFT_IN_MIN- extPos)+ RIGHT_IN_MIN))
     }
 
 
     override fun isFinished(): Boolean {
-        return time.milliseconds() >= abs(
-            intake.extLeft.position - originPos) /IntakeExtension.EXT_SPEED + 100
+        return true //time.milliseconds() >= abs(intake.extLeft.position - originPos) /IntakeExtension.EXT_SPEED + 100
     }
 }

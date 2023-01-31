@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.test
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
@@ -23,6 +24,7 @@ class LiftTest: LinearOpMode() {
                 Gamepad.RUMBLE_DURATION_CONTINUOUS
             )
             telemetry.addData("lift", lift.leftLift.currentPosition)
+            telemetry.addData("amps", lift.leftLift.getCurrent(CurrentUnit.AMPS))
             telemetry.update()
         }
     }
