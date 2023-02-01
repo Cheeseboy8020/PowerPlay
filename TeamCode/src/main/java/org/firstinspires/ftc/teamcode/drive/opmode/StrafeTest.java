@@ -25,8 +25,6 @@ public class StrafeTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        IntakeExtension intake = new IntakeExtension(hardwareMap, telemetry);
-        intake.retract();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         /*T265Localizer.slamera.setOdometryInfo((float) T265Localizer.cameraRobotOffset.getX(), (float) T265Localizer.cameraRobotOffset.getY(), (float) T265Localizer.cameraRobotOffset.getHeading(), 0.0);
         ((T265Localizer) drive.getLocalizer()).setEnableMSE(false);*/

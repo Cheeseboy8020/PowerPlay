@@ -30,8 +30,7 @@ class TeleOp: CommandOpMode() {
         val lift = Lift(hardwareMap, Lift.Positions.IN_ROBOT, OpModeType.AUTO)
         val drive = MecanumDrive(hardwareMap)
         drive.poseEstimate = pose
-        val intake = IntakeExtension(hardwareMap, telemetry)
-        intake.retractFull()
+        val intake = IntakeExtension(hardwareMap, telemetry, OpModeType.AUTO)
         val intakeArm = IntakeArm(hardwareMap, telemetry, OpModeType.AUTO)
         val liftArm = LiftArm(hardwareMap, OpModeType.TELEOP)
 

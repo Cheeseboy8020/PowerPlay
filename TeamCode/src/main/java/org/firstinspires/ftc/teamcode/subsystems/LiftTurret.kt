@@ -14,10 +14,6 @@ class LiftTurret(
     val turret = hardwareMap.get(Servo::class.java, "turret")
     val turretEncoder = hardwareMap.get(AnalogInput::class.java, "turretEncoder")
 
-    companion object{
-        @JvmField var ARM_IN = 0.44
-        @JvmField var ARM_OUT= 0.6
-    }
     init {
         if(opModeType == OpModeType.AUTO) {
             setAngle(0.0)

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @TeleOp
 @Config
@@ -21,7 +22,7 @@ class ExtendingTestCr: LinearOpMode() {
     }
     lateinit var intake: IntakeExtension
     override fun runOpMode() {
-        intake = IntakeExtension(hardwareMap, telemetry)
+        intake = IntakeExtension(hardwareMap, telemetry, OpModeType.AUTO)
         lateinit var analog: AnalogInput
         analog = hardwareMap.get(AnalogInput::class.java, "dist")
         var lp = LowPassFilter(0.5)

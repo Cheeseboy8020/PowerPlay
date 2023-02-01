@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.localizer.T265Localizer.Companion.sl
 import org.firstinspires.ftc.teamcode.drive.localizer.toFtcLib
 import org.firstinspires.ftc.teamcode.drive.localizer.toRoadRunner
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 
 /*
@@ -32,7 +33,7 @@ class T265Tuner : LinearOpMode() {
 
     override fun runOpMode() {
         val drive = SampleMecanumDrive(hardwareMap)
-        val intake = IntakeExtension(hardwareMap, telemetry)
+        val intake = IntakeExtension(hardwareMap, telemetry, OpModeType.AUTO)
         val loc = drive.localizer as T265Localizer
         loc.enableMSE = false
         if (isStopRequested) {
@@ -42,7 +43,6 @@ class T265Tuner : LinearOpMode() {
             telemetry.addData("Confidence", loc.poseConfidence)
             telemetry.update()
         }
-        intake.retract()
         waitForStart()
         drive.poseEstimate = Pose2d(0.0, 0.0, 0.0)
         if (isStopRequested) {

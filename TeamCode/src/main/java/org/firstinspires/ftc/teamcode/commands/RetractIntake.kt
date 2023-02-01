@@ -20,7 +20,6 @@ class RetractIntake(private var intake: IntakeExtension, var delay: Int = 0, var
         while(time.milliseconds()<delay){}
         //originPos = intake.extLeft.position
         time.reset()
-        intake.retract()
     }
 
 
