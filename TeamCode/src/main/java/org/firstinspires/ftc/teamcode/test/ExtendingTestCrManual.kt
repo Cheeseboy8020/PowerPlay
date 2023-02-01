@@ -10,13 +10,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 import org.firstinspires.ftc.teamcode.util.Encoder
+import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @TeleOp
 //@Disabled
 class ExtendingTestCrManual: LinearOpMode() {
     lateinit var intake: IntakeExtension
     override fun runOpMode() {
-        intake = IntakeExtension(hardwareMap, telemetry)
+        intake = IntakeExtension(hardwareMap, telemetry, OpModeType.AUTO)
         var motor = hardwareMap.get(DcMotorEx::class.java, "encoder")
         motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER

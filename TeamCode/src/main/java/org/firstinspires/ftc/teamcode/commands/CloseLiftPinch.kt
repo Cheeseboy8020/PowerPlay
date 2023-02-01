@@ -12,7 +12,6 @@ class CloseLiftPinch(private var lift: LiftArm) : CommandBase() {
 
     override fun initialize() {
         time.reset()
-        lift.close()
     }
 
     override fun isFinished(): Boolean {

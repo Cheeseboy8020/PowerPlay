@@ -13,10 +13,10 @@ import com.qualcomm.robotcore.hardware.Servo
 class ServoReset: LinearOpMode() {
     lateinit var servo: Servo
     override fun runOpMode() {
-        servo = hardwareMap.get(Servo::class.java, "extLeft")
+        servo = hardwareMap.get(Servo::class.java, "turret")
         waitForStart()
         while(opModeIsActive()) {
-            servo.position = 0.4
+            servo.position = 0.0
         }
     }
 

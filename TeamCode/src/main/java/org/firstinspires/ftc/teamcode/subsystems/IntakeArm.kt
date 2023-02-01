@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
 import com.acmerobotics.dashboard.config.Config
-import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
@@ -11,8 +10,7 @@ import org.firstinspires.ftc.teamcode.util.OpModeType
 @Config
 class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: OpModeType
 ) : SubsystemBase() {
-    var leftPinch: Servo
-    var rightPinch: Servo
+    var pinch: Servo
     var arm: Servo
 
     enum class PinchState{
@@ -30,8 +28,7 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
     var state = PinchState.CLOSED
 
     init {
-        leftPinch = hardwareMap.get(Servo::class.java, "leftPinch")
-        rightPinch = hardwareMap.get(Servo::class.java, "rightPinch")
+        pinch = hardwareMap.get(Servo::class.java, "intakePinch")
         arm = hardwareMap.get(Servo::class.java, "intakeArm")
         if (opModeType == OpModeType.AUTO) {
             open()
@@ -40,13 +37,11 @@ class IntakeArm(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: 
     }
 
     fun open(){
-        leftPinch.position = 0.43
-        rightPinch.position=0.57
+        pinch.position = 0.43
     }
 
     fun close(){
-        leftPinch.position=0.5
-        rightPinch.position=0.5
+        pinch.position=0.5
 
     }
     fun armOut(stackHeight: Int){

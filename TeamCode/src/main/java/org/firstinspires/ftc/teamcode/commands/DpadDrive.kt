@@ -21,15 +21,15 @@ class DpadDrive(var drive: MecanumDrive, var dir: Direction): CommandBase() {
         initialPose = drive.poseEstimate
         transController = PIDFController(SampleMecanumDrive.TRANSLATIONAL_PID)
         headingController = PIDFController(SampleMecanumDrive.HEADING_PID)
-        transController.targetPosition =
     }
 
     override fun execute() {
         when(dir) {
-            Direction.FORWARD -> drive.setWeightedDrivePower(Pose2d(1.0, , ))
+            Direction.FORWARD -> drive.setWeightedDrivePower(Pose2d(1.0, 1.0, 1.0))
             Direction.BACKWARDS -> drive.setWeightedDrivePower(Pose2d(0.0, -0.5, 0.0))
             Direction.LEFT -> drive.setWeightedDrivePower(Pose2d(-0.5, 0.0, 0.0))
             Direction.RIGHT -> drive.setWeightedDrivePower(Pose2d(0.5, 0.0, 0.0))
+            else -> {}
         }
         drive.update()
     }

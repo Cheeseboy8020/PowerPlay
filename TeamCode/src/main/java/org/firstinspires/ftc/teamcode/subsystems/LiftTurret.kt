@@ -6,12 +6,13 @@ import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Config
-class LiftArm(
+class LiftTurret(
     hardwareMap: HardwareMap,
     opModeType: OpModeType
 ) : SubsystemBase() {
 
-    val arm = hardwareMap.get(Servo::class.java, "liftArm")
+    val turret = hardwareMap.get(Servo::class.java, "turret")
+    val turretEncoder = hardwareMap.get(AnalogInput::class.java, "turretEncoder")
 
     companion object{
         @JvmField var ARM_IN = 0.44
@@ -19,15 +20,19 @@ class LiftArm(
     }
     init {
         if(opModeType == OpModeType.AUTO) {
-            armIn()
+            setAngle(0.0)
         }
     }
 
-    fun armIn(){
-        arm.position = ARM_IN
+    fun setAngle(angle: Double){
+        turret.position = angle/355
     }
 
-    fun armOut(armOut:Double = ARM_OUT){
-        arm.position=armOut
+    fun getPos(): Double{
+        return 3.3/turretEncoder.voltage
+    }
+
+    fun getAngle(): Double{
+        return getPos()*355
     }
 }

@@ -11,7 +11,6 @@ class OpenLiftPinch(private var lift: LiftArm) : CommandBase() {
 
     override fun initialize() {
         time.reset()
-        lift.open()
     }
 
     override fun isFinished(): Boolean {

@@ -13,7 +13,7 @@ class GamepadDrive(
     private val leftX: DoubleSupplier
     private val rightX: DoubleSupplier
     override fun execute() {
-        drive.drive(leftY.asDouble, leftX.asDouble, rightX.asDouble)
+        drive.drive(cubeInput(leftY.asDouble, 0.3), cubeInput(leftX.asDouble, 0.3), cubeInput(rightX.asDouble, 0.3))
     }
 
     init {
@@ -22,5 +22,11 @@ class GamepadDrive(
         this.leftY = leftY
         this.rightX = rightX
         addRequirements(drive)
+    }
+
+    fun cubeInput(input: Double, factor: Double): Double {
+        val t = factor * Math.pow(input, 3.0)
+        val r = input * (1 - factor)
+        return t + r
     }
 }
