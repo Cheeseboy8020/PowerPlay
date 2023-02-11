@@ -16,6 +16,6 @@ class LowerIntakeArm(private var intake: IntakeArm, var stackHeight: Int) : Comm
         intake.armOut(stackHeight)
     }
     override fun isFinished(): Boolean {
-        return time.milliseconds() >= 250
+        return time.milliseconds() >= 350
     }
 }

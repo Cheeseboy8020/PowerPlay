@@ -11,24 +11,21 @@ class LiftTurret(
     opModeType: OpModeType
 ) : SubsystemBase() {
 
+    companion object{
+        @JvmField var TURRET_RESET = 0.3
+    }
+
     val turret = hardwareMap.get(Servo::class.java, "turret")
     val turretEncoder = hardwareMap.get(AnalogInput::class.java, "turretEncoder")
-
     init {
         if(opModeType == OpModeType.AUTO) {
-            setAngle(0.0)
         }
     }
 
-    fun setAngle(angle: Double){
-        turret.position = angle/355
-    }
-
-    fun getPos(): Double{
-        return 3.3/turretEncoder.voltage
-    }
-
-    fun getAngle(): Double{
-        return getPos()*355
+    var pos: Double = 1-(turretEncoder.voltage/3.3)
+        get() = 1-(turretEncoder.voltage/3.3)
+        set(value) {
+        turret.position = value
+        field = value
     }
 }

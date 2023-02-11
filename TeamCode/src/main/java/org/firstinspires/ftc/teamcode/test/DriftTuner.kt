@@ -26,15 +26,21 @@ class DriftTuner: LinearOpMode() {
         var hTab = InterpLUT()
         var timer = ElapsedTime()
         telemetry = MultipleTelemetry(this.telemetry, dashboard.telemetry)
+        drive.poseEstimate = Pose2d(0.0, 0.0, 0.0)
+        telemetry.addData("y", drive.poseEstimate.y)
+        telemetry.addData("h", Math.toDegrees(drive.poseEstimate.heading))
+        telemetry.update()
         waitForStart()
         drive.poseEstimate = Pose2d(0.0, 0.0, 0.0)
         yTab.add(drive.poseEstimate.x, drive.poseEstimate.y)
         hTab.add(drive.poseEstimate.x, Math.toDegrees(drive.poseEstimate.heading))
-        while(timer.milliseconds()<3000) {
+        timer.reset()
+        while(timer.milliseconds()<1000) {
             drive.setWeightedDrivePower(Pose2d(1.0, 0.0, 0.0))
             yTab.add(drive.poseEstimate.x, drive.poseEstimate.y)
             hTab.add(drive.poseEstimate.x, Math.toDegrees(drive.poseEstimate.heading))
             telemetry.addData("y", drive.poseEstimate.y)
+            telemetry.addData("time", timer.milliseconds())
             telemetry.addData("h", Math.toDegrees(drive.poseEstimate.heading))
             telemetry.update()
         }

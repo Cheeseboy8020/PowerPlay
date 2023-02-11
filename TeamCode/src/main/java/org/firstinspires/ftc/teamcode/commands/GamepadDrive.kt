@@ -17,11 +17,10 @@ class GamepadDrive(
     private val leftX: DoubleSupplier
     private val rightX: DoubleSupplier
     override fun execute() {
-        Log.w("GamepadDrive", "Executing")
         drive.setWeightedDrivePower(
             Pose2d(
-                leftY.asDouble,
-                -leftX.asDouble,
+                -leftY.asDouble,
+                leftX.asDouble,
                 -rightX.asDouble
             )
         )

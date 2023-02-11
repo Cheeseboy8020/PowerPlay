@@ -14,8 +14,8 @@ class LiftArm(
     val arm = hardwareMap.get(Servo::class.java, "liftArm")
 
     companion object{
-        @JvmField var ARM_IN = 0.44
-        @JvmField var ARM_OUT= 0.6
+        @JvmField var ARM_IN = 0.435
+        @JvmField var ARM_OUT= 0.65
     }
     init {
         if(opModeType == OpModeType.AUTO) {

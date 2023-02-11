@@ -10,10 +10,11 @@ import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import org.firstinspires.ftc.teamcode.subsystems.*
 
 @Config
-class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeExtension, lift: Lift, stackHeight: Int, extPos: Double, liftHeight: Lift.Positions, turret: LiftTurret, turretAngle: Double = 0.0, armPos: Double = 0.65, dropDelay: Long = 500, wait: Long = 0): SequentialCommandGroup() {
+class ScoreConeTimed(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeExtension, lift: Lift, stackHeight: Int, extPos: Double, liftHeight: Lift.Positions, turret: LiftTurret, turretAngle: Double = 0.0, armPos: Double = 0.65, dropDelay: Long = 500, wait: Long = 0): SequentialCommandGroup() {
     companion object{
         @JvmField var TURRET_DELAY = 250
         @JvmField var INTAKE_ARM_DELAY = 750
+
     }
     init {
         addCommands(
@@ -28,7 +29,7 @@ class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeE
                     LiftTurretPosition(turret,turretAngle)
                 ),
                 LowerIntakeArm(intakeArm, stackHeight),
-                ExtendIntake(intakeExtension, extPos),
+                ExtendIntakeTime(intakeExtension, extPos),
             ),
             WaitCommand(dropDelay),
             CloseIntakePinch(intakeArm),

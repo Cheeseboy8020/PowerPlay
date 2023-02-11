@@ -16,6 +16,6 @@ class LowerLiftArm(private var lift: LiftArm) : CommandBase() {
     }
 
     override fun isFinished(): Boolean {
-        return time.milliseconds() >= 250
+        return time.milliseconds() >= 500
     }
 }

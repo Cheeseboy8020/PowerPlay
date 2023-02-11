@@ -62,8 +62,8 @@ fun ChassisSpeeds.toRoadRunner(): Pose2d {
 @Config
 class T265Localizer(
     hardwareMap: HardwareMap,
-    var odometryCovariance: Double,
-    val drive: MecanumDrive, var enableMSE: Boolean = true
+    var odometryCovariance: Double = 0.8,
+    val drive: MecanumDrive
 ): Localizer, Consumer<T265Camera.CameraUpdate> {
     val tag = "ftc265"
 
@@ -140,32 +140,7 @@ class T265Localizer(
                 odometryVelocity.x * inToM,
                 odometryVelocity.y * inToM
             )
-            if (enableMSE) {
-                if (lastUpdate.confidence == T265Camera.PoseConfidence.High) {
-                    odometryCovariance += ((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
-                            (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
-                            (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
-                            300000
-                    if (odometryCovariance >= 0.9){
-                        odometryCovariance = 0.9
-                    }
-                } else {
-                    odometryCovariance -= (((encoderLoc.poseEstimate.x * inToM - lastUpdate.pose.x).pow(2) +
-                            (encoderLoc.poseEstimate.y * inToM - lastUpdate.pose.y).pow(2) +
-                            (encoderLoc.poseEstimate.heading.toDegrees - lastUpdate.pose.heading.toDegrees).pow(2))/
-                            3)/300000
-                    if (odometryCovariance <= 0.02){
-                        odometryCovariance = 0.02
-                    }
-                }
-            }
         }
-
-        /*slamera!!.setOdometryInfo(
-            cameraRobotOffset.toFtcLib().translation.x.toFloat(),
-            cameraRobotOffset.toFtcLib().translation.y.toFloat(),
-            cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
-            odometryCovariance)*/
     }
 
     init {
@@ -193,11 +168,6 @@ class T265Localizer(
         logPose(poseEstimate)
         poseEstimate = Pose2d()
         logPose(poseEstimate)
-        /*slamera!!.setOdometryInfo(
-            cameraRobotOffset.toFtcLib().translation.x.toFloat(),
-            cameraRobotOffset.toFtcLib().translation.y.toFloat(),
-            cameraRobotOffset.toFtcLib().rotation.radians.toFloat(),
-            odometryCovariance)*/
     }
 
     companion object {

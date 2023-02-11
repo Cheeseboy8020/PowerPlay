@@ -10,7 +10,7 @@ import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import org.firstinspires.ftc.teamcode.subsystems.*
 
 @Config
-class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeExtension, lift: Lift, stackHeight: Int, extPos: Double, liftHeight: Lift.Positions, turret: LiftTurret, turretAngle: Double = 0.0, armPos: Double = 0.65, dropDelay: Long = 500, wait: Long = 0): SequentialCommandGroup() {
+class ScoreConeAuto(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeExtension, lift: Lift, stackHeight: Int, extPos: Double, liftHeight: Lift.Positions, turret: LiftTurret, turretAngle: Double = 0.0, armPos: Double = 0.65, dropDelay: Long = 500, wait: Long = 0): SequentialCommandGroup() {
     companion object{
         @JvmField var TURRET_DELAY = 250
         @JvmField var INTAKE_ARM_DELAY = 750
@@ -36,12 +36,10 @@ class ScoreCone(intakeArm: IntakeArm, liftArm: LiftArm, intakeExtension: IntakeE
                 ResetTurret(turret),
                 LowerLiftArm(liftArm),
                 LiftGoToPos(lift, Lift.Positions.IN_ROBOT),
-                SequentialCommandGroup(
-                    WaitCommand(INTAKE_ARM_DELAY.toLong()),
-                    RaiseIntakeArm(intakeArm)
-                ),
-                RetractIntake(intakeExtension)
+                RaiseIntakeArm(intakeArm)
             ),
+            WaitCommand(350),
+            RetractIntake(intakeExtension)
         )
     }
 }

@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 
-class RaiseLiftArm(private var lift: LiftArm, var armPos: Double=0.6) : CommandBase() {
+class RaiseLiftArm(private var lift: LiftArm, var armPos: Double=0.53) : CommandBase() {
     val time = ElapsedTime()
     init {
         addRequirements(lift)

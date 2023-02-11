@@ -10,16 +10,19 @@ import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import org.firstinspires.ftc.teamcode.subsystems.*
 
 @Config
-class ScoreConeLift(liftArm: LiftArm, lift: Lift, liftHeight: Lift.Positions, armPos:Double=0.6, wait: Long = 0): SequentialCommandGroup() {
+class ScoreConeLift(liftArm: LiftArm, lift: Lift, liftHeight: Lift.Positions, armPos:Double=0.6, turret: LiftTurret, turretAngle: Double = 0.0, wait: Long = 0): SequentialCommandGroup() {
     init {
         addCommands(
             WaitCommand(wait),
-            CloseLiftPinch(liftArm),
             ParallelCommandGroup(
                 LiftGoToPos(lift, liftHeight),
-                RaiseLiftArm(liftArm, armPos)
+                RaiseLiftArm(liftArm, armPos),
+                SequentialCommandGroup(
+                WaitCommand(ScoreConeAutoLift.TURRET_DELAY.toLong()),
+                LiftTurretPosition(turret,turretAngle)
             ),
-            OpenLiftPinch(liftArm),
+            ),
+            WaitCommand(250),
             LowerLiftArm(liftArm),
             LiftGoToPos(lift, Lift.Positions.IN_ROBOT),
         )

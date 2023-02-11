@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.subsystems.IntakeArm
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 import org.firstinspires.ftc.teamcode.subsystems.LiftArm
 import org.firstinspires.ftc.teamcode.subsystems.LiftTurret
+import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @TeleOp
@@ -18,8 +19,8 @@ class ServoTester: LinearOpMode() {
     override fun runOpMode() {
         intake = IntakeExtension(hardwareMap, telemetry, OpModeType.AUTO)
         intakeArm = IntakeArm(hardwareMap, telemetry, OpModeType.AUTO)
-        lift = LiftArm(hardwareMap, OpModeType.TELEOP)
-        turret = LiftTurret(hardwareMap, OpModeType.TELEOP)
+        lift = LiftArm(hardwareMap, OpModeType.AUTO)
+        turret = LiftTurret(hardwareMap, OpModeType.AUTO)
         waitForStart()
         while(opModeIsActive()) {
             if(gamepad1.right_bumper){
@@ -53,23 +54,29 @@ class ServoTester: LinearOpMode() {
                 lift.armIn()
             }
             if(gamepad2.dpad_down){
-                turret.setAngle(0.0)
+                turret.pos = 0.3
             }
-            if (gamepad2.dpad_up){
-                turret.setAngle(180.0)
-            }
-            if (gamepad2.dpad_left){
-                turret.setAngle(90.0)
+            if (gamepad2.dpad_left) {
+                turret.pos = 0.0
             }
             if (gamepad2.dpad_right){
-                turret.setAngle(270.0)
+                turret.pos = 0.6
+            }
+            if(gamepad2.left_stick_button){
+                intake.retractFull()
+            }
+
+            if(gamepad2.x){
+                intake.retractFull()
+            }
+
+            if(gamepad2.b){
+                intake.extend(Pair(0.7, 0.3))
             }
             /*if(gamepad2.right_trigger.toDouble()!=0.0){
                 turret.turret.position = gamepad2.right_trigger.toDouble()
             }*/
-            intake.extRight.power = -gamepad1.right_stick_y.toDouble()
-            intake.extLeft.power = -gamepad1.right_stick_y.toDouble()
-            telemetry.addData("turretPos", turret.getPos())
+            telemetry.addData("turretPos", turret.pos)
             telemetry.addData("turretPosProgram", turret.turret.position)
             telemetry.update()
         }

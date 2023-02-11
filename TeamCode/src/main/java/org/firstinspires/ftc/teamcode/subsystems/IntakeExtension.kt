@@ -3,30 +3,31 @@ package org.firstinspires.ftc.teamcode.subsystems
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.SubsystemBase
-import com.qualcomm.robotcore.hardware.*
+import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.util.Encoder
 import org.firstinspires.ftc.teamcode.util.OpModeType
 
 @Config
 class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry, opModeType: OpModeType) : SubsystemBase() {
-    var extLeft: CRServo
-    var extRight: CRServo
+    var extLeft: Servo
+    var extRight: Servo
     var encoder: Encoder
     companion object{
         //TODO: Figure these out
-        @JvmField var LEFT_IN = 0.42
-        @JvmField var RIGHT_IN = 0.58
-        const val LEFT_OUT_MAX = 0.01
-        @JvmField var LEFT_IN_MIN = 0.42
-        const val RIGHT_OUT_MAX = 0.99
-        @JvmField var RIGHT_IN_MIN = 0.58
+        @JvmField var LEFT_IN = 0.5
+        @JvmField var RIGHT_IN = 0.5
+        @JvmField var LEFT_IN_MIN = 0.45
+        @JvmField var RIGHT_IN_MIN = 0.55
+        const val EXT_SPEED  = 0.4/750.0 // Rate of extension in servo position per millisecond
     }
 
     init {
-        extLeft = hardwareMap.get(CRServo::class.java, "extLeft")
-        extRight = hardwareMap.get(CRServo::class.java, "extRight")
-        extRight.direction = DcMotorSimple.Direction.REVERSE
+        extLeft = hardwareMap.get(Servo::class.java, "extLeft")
+        extRight = hardwareMap.get(Servo::class.java, "extRight")
         val motor = hardwareMap.get(DcMotorEx::class.java, "encoder")
         when(opModeType){
             OpModeType.AUTO -> {
@@ -39,16 +40,23 @@ class IntakeExtension(hardwareMap: HardwareMap, val telemetry: Telemetry, opMode
         encoder.direction = Encoder.Direction.REVERSE
     }
 
-    var position = 0.0
-    get() {
-        return encoder.currentPosition.toDouble()
+
+    fun retract(){
+        extLeft.position = LEFT_IN
+        extRight.position = RIGHT_IN
+        telemetry.addData("pos", extLeft.position)
+        telemetry.update()
     }
 
-    var power = 0.0
-    get() = extLeft.power
-    set(value) {
-        field = value
-        extLeft.power = value
-        extRight.power = value
+    fun retractFull(){
+        extend(Pair(LEFT_IN_MIN, RIGHT_IN_MIN))
     }
+
+    fun extend(pos: Pair<Double, Double>){
+        extLeft.position = pos.first
+        extRight.position = pos.second
+        telemetry.addData("pos", extLeft.position)
+        telemetry.update()
+    }
+
 }

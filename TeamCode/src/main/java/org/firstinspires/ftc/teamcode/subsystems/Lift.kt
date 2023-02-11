@@ -13,12 +13,11 @@ class Lift(
 ) : SubsystemBase() {
 
     companion object {
-        @JvmStatic
-        fun rpmToTicksPerSecond(rpm: Double): Double {
-            return rpm * 28 * (68.0 / 13) * (84.0 / 29) * (84.0 / 29) / 60
-        }
-        @JvmField var HIGH = 1300
-        @JvmField var HIGH_AUTO = 1650
+        @JvmField var HIGH = 600
+        @JvmField var HIGH_ANGLE = 800
+        @JvmField var MEDIUM = 300
+        @JvmField var LOW = 350
+        @JvmField var IN_ROBOT = 20
     }
 
     val leftLift: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "leftLift")
@@ -28,10 +27,10 @@ class Lift(
 
     enum class Positions(val targetPosition: Int) {
         HIGH(Lift.HIGH),
-        HIGH_AUTO(Lift.HIGH_AUTO),
-        MEDIUM(850),
-        LOW(350),
-        IN_ROBOT(20)
+        HIGH_ANGLE(Lift.HIGH_ANGLE),
+        MEDIUM(Lift.MEDIUM),
+        LOW(Lift.LOW),
+        IN_ROBOT(Lift.IN_ROBOT)
     }
 
     var currentPosition = Positions.IN_ROBOT
@@ -59,4 +58,7 @@ class Lift(
         this.leftLift.power = power
         this.rightLift.power = power
     }
+
+    val position: Int
+    get() = leftLift.currentPosition
 }

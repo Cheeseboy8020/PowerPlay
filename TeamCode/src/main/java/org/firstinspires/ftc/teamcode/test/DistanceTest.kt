@@ -15,11 +15,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 class DistanceTest: LinearOpMode() {
     lateinit var analog: AnalogInput
     override fun runOpMode() {
-        var dashboard = FtcDashboard.getInstance();
+        val dashboard = FtcDashboard.getInstance();
         telemetry = MultipleTelemetry(this.telemetry, dashboard.telemetry)
         analog = hardwareMap.get(AnalogInput::class.java, "dist")
-        var mf = MedianFilter(3)
-        var lp = LowPassFilter(0.5)
+        val mf = MedianFilter(3)
+        val lp = LowPassFilter(0.5)
         waitForStart()
         while(opModeIsActive()&&!isStopRequested) {
             mf.push(analog.voltage)

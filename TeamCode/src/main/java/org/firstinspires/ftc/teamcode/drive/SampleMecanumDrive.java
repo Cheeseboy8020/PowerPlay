@@ -155,7 +155,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        setLocalizer(new T265Localizer(hardwareMap, 0.02, this, true));
+        setLocalizer(new T265Localizer(hardwareMap, 0.02, this));
 
         trajectorySequenceRunner = new TrajectorySequenceRunnerCancelable(follower, HEADING_PID);
     }
